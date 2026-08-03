@@ -1,0 +1,20 @@
+# SEERA Dataset
+
+## Source
+Mustafa, E.I. and Osman, R. (2020) "SEERA: a software cost estimation dataset for constrained environments," *Proceedings of the 16th ACM International Conference on Predictive Models and Data Analytics in Software Engineering*.
+
+## License
+Creative Commons Attribution (CC BY)
+
+## Citation
+Mustafa, E.I. and Osman, R., 2020. SEERA: a software cost estimation dataset for constrained environments. In *Proceedings of the 16th ACM International Conference on Predictive Models and Data Analytics in Software Engineering* (pp. 61-70). ACM.
+
+## File Description
+- **Filename:** SEERA_cost_estimation_dataset.xlsx
+- **Format:** Excel (.xlsx)
+- **Rows:** 120 project instances
+- **Columns:** 76 features
+- **Target Variable:** Actual Effort (person-months)
+
+## Access Date
+[Date you downloaded the dataset]
