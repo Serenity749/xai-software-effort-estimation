@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XAI · SEE Assistant | SEERA Project Manager</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #f4f7fc;
+            font-family: 'Inter', sans-serif;
+            color: #1a2639;
+            line-height: 1.5;
+            padding: 24px;
+        }
+        .dashboard {
+            max-width: 1440px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        .header {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 18px 24px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.02);
+            border: 1px solid #e4eaf2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .title-section h1 {
+            font-weight: 700;
+            font-size: 1.7rem;
+            background: linear-gradient(135deg, #0b2b4f, #1d4a7c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .main-grid {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 24px;
+        }
+        @media (max-width: 1000px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .panel {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 22px;
+            border: 1px solid #e4eaf2;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .panel-header h3 {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #163753;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .panel-header i {
+            color: #2f6690;
+            font-size: 1.2rem;
+        }
+        .btn {
+            background: #1f4b6e;
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn:hover {
+            background: #123754;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #2e405a;
+            margin-bottom: 6px;
+        }
+        .form-group .input-hint {
+            font-size: 0.75rem;
+            color: #7a8b9e;
+            margin-left: 8px;
+        }
+        select, input[type="number"] {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #ccd8e5;
+            border-radius: 14px;
+            font-size: 0.95rem;
+            background: #f9fbfd;
+            color: #1a2639;
+            font-family: 'Inter', sans-serif;
+            transition: border 0.2s;
+        }
+        select:focus, input[type="number"]:focus {
+            outline: none;
+            border-color: #2a6f97;
+            background: #fff;
+        }
+        .range-slider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .range-slider input[type="range"] {
+            flex: 1;
+            accent-color: #2a6f97;
+        }
+        .range-value {
+            min-width: 40px;
+            font-weight: 600;
+            color: #1f4b6e;
+            text-align: center;
+            background: #eef3f9;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        .estimate-card {
+            background: #f8fbff;
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            border: 1px solid #d5e2f0;
+        }
+        .estimate-value {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: #0f3a5f;
+            line-height: 1.1;
+        }
+        .estimate-unit {
+            font-size: 1rem;
+            color: #5d6f82;
+            font-weight: 500;
+        }
+        .estimate-detail {
+            font-size: 0.85rem;
+            color: #4b5c6e;
+            margin-top: 6px;
+        }
+        .shap-breakdown {
+            background: #f8fafd;
+            border-radius: 16px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+        .shap-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        .shap-label {
+            width: 140px;
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+        .shap-bar-container {
+            flex: 1;
+            height: 8px;
+            background: #e9eef5;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .shap-bar {
+            height: 8px;
+            border-radius: 12px;
+        }
+        .shap-value {
+            width: 50px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-align: right;
+        }
+        .positive { background: #3f7ea6; }
+        .negative { background: #b3543f; }
+        .counterfactual-box {
+            background: #fff9f0;
+            border-left: 4px solid #f0a04b;
+            padding: 14px 16px;
+            border-radius: 14px;
+            margin-top: 16px;
+        }
+        .counterfactual-box h4 {
+            color: #1a3d59;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+        }
+        .suggestion-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+        .suggestion-icon { color: #2a6f97; margin-top: 2px; }
+        .insight-card {
+            background: #eef7f4;
+            border-radius: 16px;
+            padding: 14px;
+            margin-top: 12px;
+            border: 1px solid #cde5dc;
+        }
+        .insight-title {
+            font-weight: 600;
+            color: #1e5a48;
+            margin-bottom: 6px;
+        }
+        .model-metrics {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+            padding: 12px;
+            background: #f5f9ff;
+            border-radius: 16px;
+        }
+        .metric-badge {
+            font-size: 0.85rem;
+            background: #ffffff;
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1px solid #d5e2f0;
+        }
+        .chat-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .chat-tab {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            background: #f0f4fa;
+            color: #2d4b6c;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+        .chat-tab.active {
+            background: #1f4b6e;
+            color: #ffffff;
+        }
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 500px;
+            border: 1px solid #dde5ef;
+            border-radius: 20px;
+            background: #fafcff;
+            overflow: hidden;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .message {
+            max-width: 85%;
+            padding: 10px 14px;
+            border-radius: 16px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            word-wrap: break-word;
+        }
+        .message.user {
+            align-self: flex-end;
+            background: #1f4b6e;
+            color: #fff;
+            border-bottom-right-radius: 4px;
+        }
+        .message.assistant {
+            align-self: flex-start;
+            background: #e9f0f7;
+            color: #1a2639;
+            border-bottom-left-radius: 4px;
+        }
+        .chat-input-area {
+            display: flex;
+            padding: 12px;
+            border-top: 1px solid #dde5ef;
+            background: #ffffff;
+        }
+        .chat-input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid #ccd8e5;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+        }
+        .chat-send-btn {
+            margin-left: 8px;
+            background: #1f4b6e;
+            color: #fff;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        .chat-send-btn:hover { background: #123754; }
+        .small-note { font-size: 0.75rem; color: #7a8b9e; margin-top: 8px; }
+    </style>
+</head>
+<body>
+<div class="dashboard">
+    <!-- HEADER -->
+    <div class="header">
+        <div class="title-section">
+            <h1><i class="fas fa-cubes" style="color: #1f4b6e;"></i> XAI · SEE Assistant</h1>
+        </div>
+    </div>
+
+    <!-- MAIN GRID -->
+    <div class="main-grid">
+        <!-- LEFT: INPUT PANEL -->
+        <div class="panel">
+            <div class="panel-header">
+                <h3><i class="fas fa-sliders-h"></i> Project Parameters</h3>
+            </div>
+            <form id="project-form" onsubmit="return false;">
+                <div class="form-group">
+                    <label>Function Points <span class="input-hint">(size)</span></label>
+                    <div class="range-slider">
+                        <input type="range" id="functionPoints" min="50" max="500" value="220" step="5">
+                        <span class="range-value" id="fpValue">220</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Team Size <span class="input-hint">(persons)</span></label>
+                    <div class="range-slider">
+                        <input type="range" id="teamSize" min="2" max="20" value="8" step="1">
+                        <span class="range-value" id="tsValue">8</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Requirements Clarity</label>
+                    <select id="reqClarity">
+                        <option value="low">Low</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Development Type</label>
+                    <select id="devType">
+                        <option value="new" selected>New Development</option>
+                        <option value="enhancement">Enhancement</option>
+                        <option value="maintenance">Maintenance</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Database Complexity</label>
+                    <select id="dbComplexity">
+                        <option value="low">Low</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Platform Complexity</label>
+                    <select id="platformComplexity">
+                        <option value="low">Low</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Team Experience (Language)</label>
+                    <select id="teamExp">
+                        <option value="low">Low</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                <button type="button" class="btn" id="estimateBtn" style="width:100%; justify-content:center;">
+                    <i class="fas fa-calculator"></i> Generate Estimate & Insights
+                </button>
+            </form>
+        </div>
+
+        <!-- RIGHT: VISUAL + CHAT PANEL -->
+        <div class="panel">
+            <div class="chat-tabs">
+                <div class="chat-tab active" data-tab="visual"><i class="fas fa-chart-bar"></i> Visual Breakdown</div>
+                <div class="chat-tab" data-tab="chat"><i class="fas fa-comments"></i> Chat with XAI Assistant</div>
+            </div>
+
+            <!-- Visual Breakdown Tab Content -->
+            <div id="visual-tab" class="tab-content">
+                <div class="estimate-card">
+                    <div style="font-size:0.9rem; color:#4b5c6e;">Estimated Effort</div>
+                    <div class="estimate-value" id="estimatedEffort">--</div>
+                    <div class="estimate-unit">person-months (PM)</div>
+                    <div class="estimate-detail" id="estimateRange">Model confidence interval: --</div>
+                </div>
+
+                <div style="font-weight:600; margin-bottom:8px; color:#1e3b54;">
+                    <i class="fas fa-sitemap"></i> Feature Contributions (SHAP)
+                </div>
+                <div class="shap-breakdown" id="shapContainer"></div>
+
+                <div class="counterfactual-box" id="counterfactualBox">
+                    <h4><i class="fas fa-lightbulb"></i> How to reduce effort (Counterfactual Suggestions)</h4>
+                    <div id="suggestionsList"></div>
+                </div>
+
+                <div class="insight-card" id="insightCard">
+                    <div class="insight-title"><i class="fas fa-tachometer-alt"></i> Productivity Insights</div>
+                    <div id="insightsText"></div>
+                </div>
+
+                <div class="model-metrics">
+                    <span class="metric-badge"><i class="fas fa-check-circle"></i> SA: 0.82</span>
+                    <span class="metric-badge"><i class="fas fa-bullseye"></i> PRED(25): 0.63</span>
+                    <span class="metric-badge"><i class="fas fa-wave-square"></i> Fidelity: 0.87</span>
+                    <span class="metric-badge"><i class="fas fa-sync-alt"></i> Stability: 0.91</span>
+                    <span class="metric-badge"><i class="fas fa-venus-mars"></i> MMRE: 0.36</span>
+                </div>
+                <div class="small-note">
+                    <i class="fas fa-asterisk"></i> Model evaluated using Leave-One-Organization-Out CV. SA is primary metric.
+                </div>
+            </div>
+
+            <!-- Chat Tab Content (initially hidden) -->
+            <div id="chat-tab" class="tab-content" style="display:none;">
+                <div class="chat-container">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message assistant">
+                            Hello! I'm your XAI assistant. I can explain the estimated effort, suggest improvements, and answer questions about your project parameters. Try asking: "Why is the estimate high?" or "What can I change to reduce effort?"
+                        </div>
+                    </div>
+                    <div class="chat-input-area">
+                        <input type="text" class="chat-input" id="chatInput" placeholder="Ask about the estimate..." onkeypress="if(event.key==='Enter') sendChatMessage()">
+                        <button class="chat-send-btn" onclick="sendChatMessage()"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ------------------------------
+    // 1. Model simulation functions
+    // ------------------------------
+    function computeEstimate(fp, teamSize, reqClarity, devType, dbComplexity, platformComplexity, teamExp) {
+        let base = 15;
+        base += fp * 0.08;
+        let teamFactor = 0;
+        if (teamSize <= 5) teamFactor = (5 - teamSize) * 1.2;
+        else if (teamSize > 10) teamFactor = (teamSize - 10) * 0.8;
+        base += teamFactor;
+        const clarityImpact = { low: 6, medium: 2, high: -2 };
+        base += clarityImpact[reqClarity] || 0;
+        const devTypeImpact = { new: 4, enhancement: 1, maintenance: -3 };
+        base += devTypeImpact[devType] || 0;
+        const dbImpact = { low: -2, medium: 1, high: 5 };
+        base += dbImpact[dbComplexity] || 0;
+        const platformImpact = { low: -2, medium: 2, high: 7 };
+        base += platformImpact[platformComplexity] || 0;
+        const expImpact = { low: 5, medium: 1, high: -4 };
+        base += expImpact[teamExp] || 0;
+        return Math.max(5, Math.round(base * 10) / 10);
+    }
+
+    function computeSHAP(fp, teamSize, reqClarity, devType, dbComplexity, platformComplexity, teamExp) {
+        let contributions = [];
+        contributions.push({ label: "Function Points", value: fp * 0.08, positive: true });
+        let teamFactor = 0;
+        if (teamSize <= 5) teamFactor = (5 - teamSize) * 1.2;
+        else if (teamSize > 10) teamFactor = (teamSize - 10) * 0.8;
+        contributions.push({ label: "Team Size", value: teamFactor, positive: teamFactor > 0 });
+        const clarityImpact = { low: 6, medium: 2, high: -2 };
+        let clarityVal = clarityImpact[reqClarity];
+        contributions.push({ label: "Req. Clarity", value: clarityVal, positive: clarityVal > 0 });
+        const devTypeImpact = { new: 4, enhancement: 1, maintenance: -3 };
+        let devVal = devTypeImpact[devType];
+        contributions.push({ label: "Dev. Type", value: devVal, positive: devVal > 0 });
+        const dbImpact = { low: -2, medium: 1, high: 5 };
+        let dbVal = dbImpact[dbComplexity];
+        contributions.push({ label: "DB Complexity", value: dbVal, positive: dbVal > 0 });
+        const platformImpact = { low: -2, medium: 2, high: 7 };
+        let platVal = platformImpact[platformComplexity];
+        contributions.push({ label: "Platform", value: platVal, positive: platVal > 0 });
+        const expImpact = { low: 5, medium: 1, high: -4 };
+        let expVal = expImpact[teamExp];
+        contributions.push({ label: "Team Exp", value: expVal, positive: expVal > 0 });
+        return contributions;
+    }
+
+    function generateSuggestions(fp, teamSize, reqClarity, devType, dbComplexity, platformComplexity, teamExp) {
+        let suggestions = [];
+        if (reqClarity === 'low' || reqClarity === 'medium') {
+            suggestions.push({
+                icon: 'fa-arrow-up',
+                text: `Increase Requirements Clarity from "${reqClarity}" to "high" — estimated effort reduction: ${reqClarity === 'low' ? '4 PM' : '3 PM'}.`,
+                impact: reqClarity === 'low' ? 4 : 3
+            });
+        }
+        if (devType === 'new') {
+            suggestions.push({
+                icon: 'fa-sync-alt',
+                text: `Consider changing Development Type from "New Development" to "Enhancement" — could reduce effort by 3 PM.`,
+                impact: 3
+            });
+        }
+        if (dbComplexity === 'high') {
+            suggestions.push({
+                icon: 'fa-database',
+                text: `Reduce Database Complexity from "high" to "medium" — estimated saving: 4 PM.`,
+                impact: 4
+            });
+        }
+        if (platformComplexity === 'high') {
+            suggestions.push({
+                icon: 'fa-server',
+                text: `Lower Platform Complexity from "high" to "medium" — estimated saving: 5 PM.`,
+                impact: 5
+            });
+        }
+        if (teamExp === 'low') {
+            suggestions.push({
+                icon: 'fa-users',
+                text: `Improve Team Experience from "low" to "medium" — estimated saving: 4 PM.`,
+                impact: 4
+            });
+        }
+        if (teamSize > 10) {
+            suggestions.push({
+                icon: 'fa-user-minus',
+                text: `Optimize team size from ${teamSize} to 10 members — reduce communication overhead, saving ${(teamSize-10)*0.8} PM.`,
+                impact: (teamSize-10)*0.8
+            });
+        }
+        if (suggestions.length === 0) {
+            suggestions.push({
+                icon: 'fa-check',
+                text: 'Your project parameters are already near-optimal. No major effort reduction opportunities identified.',
+                impact: 0
+            });
+        }
+        suggestions.sort((a,b) => b.impact - a.impact);
+        return suggestions;
+    }
+
+    function generateInsights(fp, teamSize, reqClarity, devType, dbComplexity, platformComplexity, teamExp) {
+        let insights = [];
+        if (reqClarity === 'low') insights.push('🔍 Low requirements clarity often leads to rework. Consider investing in requirements elicitation.');
+        if (teamSize > 10) insights.push('👥 Large team size increases communication overhead. Consider breaking into sub-teams or reducing size if possible.');
+        if (dbComplexity === 'high' && platformComplexity === 'high') insights.push('⚠️ High database and platform complexity together amplify effort. Evaluate if architecture can be simplified.');
+        if (teamExp === 'low') insights.push('📉 Low team experience with language can lead to inefficiencies. Consider training or pairing with experienced members.');
+        if (devType === 'new') insights.push('🆕 New development projects inherently require more effort. Reuse existing components where possible.');
+        if (insights.length === 0) insights.push('✅ Current parameter combination is relatively efficient. Maintain good practices.');
+        return insights;
+    }
+
+    // ------------------------------
+    // 2. UI update functions
+    // ------------------------------
+    function getCurrentParams() {
+        return {
+            fp: parseInt(document.getElementById('functionPoints').value),
+            teamSize: parseInt(document.getElementById('teamSize').value),
+            reqClarity: document.getElementById('reqClarity').value,
+            devType: document.getElementById('devType').value,
+            dbComplexity: document.getElementById('dbComplexity').value,
+            platformComplexity: document.getElementById('platformComplexity').value,
+            teamExp: document.getElementById('teamExp').value
+        };
+    }
+
+    function updateVisualDashboard() {
+        const p = getCurrentParams();
+        document.getElementById('fpValue').textContent = p.fp;
+        document.getElementById('tsValue').textContent = p.teamSize;
+
+        const estimate = computeEstimate(p.fp, p.teamSize, p.reqClarity, p.devType, p.dbComplexity, p.platformComplexity, p.teamExp);
+        document.getElementById('estimatedEffort').textContent = estimate.toFixed(1);
+        document.getElementById('estimateRange').textContent = `Model confidence interval: ${ (estimate*0.85).toFixed(1) } - ${ (estimate*1.15).toFixed(1) } PM`;
+
+        const contributions = computeSHAP(p.fp, p.teamSize, p.reqClarity, p.devType, p.dbComplexity, p.platformComplexity, p.teamExp);
+        const shapContainer = document.getElementById('shapContainer');
+        shapContainer.innerHTML = '';
+        contributions.forEach(contrib => {
+            const row = document.createElement('div');
+            row.className = 'shap-row';
+            const label = document.createElement('span');
+            label.className = 'shap-label';
+            label.textContent = contrib.label;
+            const barContainer = document.createElement('div');
+            barContainer.className = 'shap-bar-container';
+            const bar = document.createElement('div');
+            bar.className = `shap-bar ${contrib.positive ? 'positive' : 'negative'}`;
+            const maxAbs = Math.max(...contributions.map(c => Math.abs(c.value)));
+            const widthPercent = maxAbs > 0 ? (Math.abs(contrib.value) / maxAbs) * 100 : 0;
+            bar.style.width = widthPercent + '%';
+            barContainer.appendChild(bar);
+            const value = document.createElement('span');
+            value.className = 'shap-value';
+            value.textContent = (contrib.value > 0 ? '+' : '') + contrib.value.toFixed(1);
+            row.appendChild(label);
+            row.appendChild(barContainer);
+            row.appendChild(value);
+            shapContainer.appendChild(row);
+        });
+
+        const suggestions = generateSuggestions(p.fp, p.teamSize, p.reqClarity, p.devType, p.dbComplexity, p.platformComplexity, p.teamExp);
+        const suggestionsList = document.getElementById('suggestionsList');
+        suggestionsList.innerHTML = '';
+        suggestions.forEach(sug => {
+            const item = document.createElement('div');
+            item.className = 'suggestion-item';
+            const icon = document.createElement('i');
+            icon.className = `fas ${sug.icon} suggestion-icon`;
+            const textSpan = document.createElement('span');
+            textSpan.textContent = sug.text;
+            item.appendChild(icon);
+            item.appendChild(textSpan);
+            suggestionsList.appendChild(item);
+        });
+
+        const insights = generateInsights(p.fp, p.teamSize, p.reqClarity, p.devType, p.dbComplexity, p.platformComplexity, p.teamExp);
+        const insightsText = document.getElementById('insightsText');
+        insightsText.innerHTML = '';
+        insights.forEach(text => {
+            const para = document.createElement('p');
+            para.style.marginBottom = '6px';
+            para.textContent = text;
+            insightsText.appendChild(para);
+        });
+    }
+
+    // ------------------------------
+    // 3. Chat logic
+    // ------------------------------
+    function sendChatMessage() {
+        const input = document.getElementById('chatInput');
+        const message = input.value.trim();
+        if (!message) return;
+        appendMessage('user', message);
+        input.value = '';
+        const response = generateAssistantResponse(message);
+        setTimeout(() => appendMessage('assistant', response), 300);
+    }
+
+    function appendMessage(sender, text) {
+        const chatMessages = document.getElementById('chatMessages');
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `message ${sender}`;
+        msgDiv.textContent = text;
+        chatMessages.appendChild(msgDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function generateAssistantResponse(userQuery) {
+        const p = getCurrentParams();
+        const estimate = computeEstimate(p.fp, p.teamSize, p.reqClarity, p.devType, p.dbComplexity, p.platformComplexity, p.teamExp);
+        const query = userQuery.toLowerCase();
+
+        if (query.includes('why') && (query.includes('high') || query.includes('estimate'))) {
+            const contribs = computeSHAP(p.fp, p.teamSize, p.reqClarity, p.devType, p.dbComplexity, p.platformComplexity, p.teamExp);
+            const positives = contribs.filter(c => c.value > 0.5).sort((a,b) => b.value - a.value);
+            if (positives.length > 0) {
+                let reasons = positives.map(c => `${c.label} (+${c.value.toFixed(1)} PM)`).join(', ');
+                return `The estimate is ${estimate.toFixed(1)} PM. The main factors increasing effort are: ${reasons}. You can reduce these by adjusting parameters (see the counterfactual suggestions).`;
+            } else {
+                return `The estimate is ${estimate.toFixed(1)} PM, which is relatively moderate. No single factor is excessively high.`;
+            }
+        }
+        if (query.includes('reduce') || query.includes('lower') || query.includes('improve')) {
+            const suggestions = generateSuggestions(p.fp, p.teamSize, p.reqClarity, p.devType, p.dbComplexity, p.platformComplexity, p.teamExp);
+            if (suggestions.length === 1 && suggestions[0].impact === 0) {
+                return 'Your current parameters are already optimal for effort reduction. No further suggestions.';
+            }
+            let resp = 'Here are actionable changes to reduce effort:\n';
+            suggestions.forEach((s, i) => {
+                resp += `${i+1}. ${s.text}\n`;
+            });
+            return resp;
+        }
+        if (query.includes('team size') || query.includes('team')) {
+            const teamFactor = (p.teamSize <= 5) ? (5 - p.teamSize) * 1.2 : (p.teamSize > 10) ? (p.teamSize - 10) * 0.8 : 0;
+            let resp = `Current team size: ${p.teamSize}.\n`;
+            if (teamFactor > 0) {
+                resp += `This team size is adding ${teamFactor.toFixed(1)} PM to the estimate due to ${p.teamSize <= 5 ? 'understaffing (too few people)' : 'communication overhead (too many people)'}. `;
+                resp += `Optimal range is 6-10 people.`;
+            } else {
+                resp += 'Team size is within optimal range (6-10). No significant impact.';
+            }
+            return resp;
+        }
+        if (query.includes('clarity') || query.includes('requirements')) {
+            const clarityImpact = { low: 6, medium: 2, high: -2 };
+            let resp = `Current requirements clarity: ${p.reqClarity}.\n`;
+            if (p.reqClarity === 'low') resp += `This adds +6 PM. Improving to "high" could save 8 PM (difference from low to high).`;
+            else if (p.reqClarity === 'medium') resp += `This adds +2 PM. Improving to "high" could save 4 PM.`;
+            else resp += 'Clarity is already high, reducing effort by -2 PM.';
+            return resp;
+        }
+        if (query.includes('development type') || query.includes('dev type')) {
+            const devImpact = { new: 4, enhancement: 1, maintenance: -3 };
+            let resp = `Development type: ${p.devType}.\n`;
+            if (p.devType === 'new') resp += 'New development adds +4 PM. Switching to enhancement would save 3 PM.';
+            else if (p.devType === 'enhancement') resp += 'Enhancement adds +1 PM. Switching to maintenance would save 4 PM.';
+            else resp += 'Maintenance reduces effort by -3 PM (already optimal).';
+            return resp;
+        }
+        if (query.includes('database') || query.includes('db')) {
+            const dbImpact = { low: -2, medium: 1, high: 5 };
+            let resp = `Database complexity: ${p.dbComplexity}.\n`;
+            if (p.dbComplexity === 'high') resp += 'High complexity adds +5 PM. Reducing to medium saves 4 PM.';
+            else if (p.dbComplexity === 'medium') resp += 'Medium adds +1 PM. Reducing to low saves 3 PM.';
+            else resp += 'Low complexity reduces effort by -2 PM.';
+            return resp;
+        }
+        if (query.includes('platform')) {
+            const platImpact = { low: -2, medium: 2, high: 7 };
+            let resp = `Platform complexity: ${p.platformComplexity}.\n`;
+            if (p.platformComplexity === 'high') resp += 'High complexity adds +7 PM. Reducing to medium saves 5 PM.';
+            else if (p.platformComplexity === 'medium') resp += 'Medium adds +2 PM. Reducing to low saves 4 PM.';
+            else resp += 'Low complexity reduces effort by -2 PM.';
+            return resp;
+        }
+        if (query.includes('experience') || query.includes('team exp')) {
+            const expImpact = { low: 5, medium: 1, high: -4 };
+            let resp = `Team experience: ${p.teamExp}.\n`;
+            if (p.teamExp === 'low') resp += 'Low experience adds +5 PM. Improving to medium saves 4 PM.';
+            else if (p.teamExp === 'medium') resp += 'Medium adds +1 PM. Improving to high saves 5 PM.';
+            else resp += 'High experience reduces effort by -4 PM.';
+            return resp;
+        }
+        if (query.includes('function points') || query.includes('fp')) {
+            return `Function Points: ${p.fp}. This contributes ${(p.fp * 0.08).toFixed(1)} PM to the estimate. Reducing scope would lower effort.`;
+        }
+        if (query.includes('estimate') || query.includes('effort')) {
+            return `Current estimated effort: ${estimate.toFixed(1)} PM (range: ${(estimate*0.85).toFixed(1)} - ${(estimate*1.15).toFixed(1)} PM). Ask "why is the estimate high?" for a breakdown.`;
+        }
+        if (query.includes('confidence') || query.includes('range')) {
+            return `The model's confidence interval is ${(estimate*0.85).toFixed(1)} - ${(estimate*1.15).toFixed(1)} PM, based on LOOCV performance.`;
+        }
+        if (query.includes('shap') || query.includes('feature')) {
+            const contribs = computeSHAP(p.fp, p.teamSize, p.reqClarity, p.devType, p.dbComplexity, p.platformComplexity, p.teamExp);
+            let resp = 'SHAP contributions (PM):\n';
+            contribs.forEach(c => resp += `• ${c.label}: ${c.value > 0 ? '+' : ''}${c.value.toFixed(1)}\n`);
+            return resp;
+        }
+        // Fallback
+        return `I can help with questions about the estimate, feature impacts, or how to reduce effort. Try: "Why is the estimate high?", "How to reduce effort?", or ask about a specific parameter like "team size".`;
+    }
+
+    // ------------------------------
+    // 4. Event listeners & tab switching
+    // ------------------------------
+    document.getElementById('estimateBtn').addEventListener('click', function() {
+        updateVisualDashboard();
+    });
+
+    document.querySelectorAll('input, select').forEach(el => {
+        el.addEventListener('input', updateVisualDashboard);
+        el.addEventListener('change', updateVisualDashboard);
+    });
+
+    // Tab switching
+    document.querySelectorAll('.chat-tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+            document.querySelectorAll('.chat-tab').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            const tabName = this.getAttribute('data-tab');
+            document.getElementById('visual-tab').style.display = tabName === 'visual' ? 'block' : 'none';
+            document.getElementById('chat-tab').style.display = tabName === 'chat' ? 'block' : 'none';
+        });
+    });
+
+    // Initial update
+    updateVisualDashboard();
+</script>
+</body>
+</html>
