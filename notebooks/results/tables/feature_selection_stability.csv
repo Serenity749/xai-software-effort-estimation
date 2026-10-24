@@ -1,0 +1,133 @@
+N,Feature,Folds_selected,Selected_pct
+10,General Information_Estimated  duration,41,100.0
+10,Developers_Team size,41,100.0
+10,Developers_Dedicated team members,41,100.0
+10,General Information_Year of project,41,100.0
+10,General Information_Size of IT department,41,100.0
+10,Size_Object points,41,100.0
+10,Users_User resistance,41,100.0
+10,General Information_Size of organization,39,95.1219512195122
+10,Developers_Daily working hours,22,53.65853658536585
+10,Environment_Economic instability impact,19,46.34146341463415
+10,Developers_Team cohesion,16,39.02439024390244
+10,Product_Product complexity,8,19.51219512195122
+10,Users_Top management opinion of previous system,5,12.195121951219512
+10,Users_User computer experience,5,12.195121951219512
+10,Product_Specified H/W,4,9.75609756097561
+10,Developers_Income satisfaction,3,7.317073170731708
+10,Environment_Contract maturity,1,2.4390243902439024
+10,General Information_Application domain,1,2.4390243902439024
+15,General Information_Estimated  duration,41,100.0
+15,Developers_Team size,41,100.0
+15,Developers_Dedicated team members,41,100.0
+15,General Information_Year of project,41,100.0
+15,General Information_Size of IT department,41,100.0
+15,Size_Object points,41,100.0
+15,Users_User resistance,41,100.0
+15,Developers_Daily working hours,41,100.0
+15,General Information_Size of organization,41,100.0
+15,Environment_Economic instability impact,38,92.6829268292683
+15,Developers_Team cohesion,36,87.8048780487805
+15,Developers_Income satisfaction,31,75.60975609756098
+15,Product_Product complexity,25,60.97560975609756
+15,Users_User computer experience,25,60.97560975609756
+15,Product_Specified H/W,22,53.65853658536585
+15,Users_Top management opinion of previous system,20,48.78048780487805
+15,Environment_Contract maturity,9,21.951219512195124
+15,Product_Performance requirements,9,21.951219512195124
+15,Developers_DBMS  expert availability,8,19.51219512195122
+15,Developers_Software tool experience,6,14.634146341463415
+15,General Information_Application domain,3,7.317073170731708
+15,Project_Process reengineering,3,7.317073170731708
+15,Developers_Team selection,3,7.317073170731708
+15,Developers_Precedentedness,2,4.878048780487805
+15,Product_Reliability requirements,2,4.878048780487805
+15,Environment_Developer training,1,2.4390243902439024
+15,Project_Tool availability,1,2.4390243902439024
+15,Project_Degree of software reuse,1,2.4390243902439024
+15,Environment_Development team management,1,2.4390243902439024
+20,General Information_Estimated  duration,41,100.0
+20,Developers_Team size,41,100.0
+20,Developers_Dedicated team members,41,100.0
+20,General Information_Year of project,41,100.0
+20,General Information_Size of IT department,41,100.0
+20,Size_Object points,41,100.0
+20,Users_User resistance,41,100.0
+20,Developers_Daily working hours,41,100.0
+20,General Information_Size of organization,41,100.0
+20,Environment_Economic instability impact,39,95.1219512195122
+20,Developers_Team cohesion,39,95.1219512195122
+20,Product_Specified H/W,38,92.6829268292683
+20,Product_Product complexity,37,90.2439024390244
+20,Developers_Income satisfaction,37,90.2439024390244
+20,Users_User computer experience,36,87.8048780487805
+20,Users_Top management opinion of previous system,35,85.36585365853658
+20,Developers_DBMS  expert availability,24,58.53658536585366
+20,Environment_Contract maturity,23,56.09756097560975
+20,Product_Performance requirements,23,56.09756097560975
+20,Developers_Precedentedness,17,41.46341463414634
+20,Product_Required reusability,16,39.02439024390244
+20,Developers_Software tool experience,16,39.02439024390244
+20,Project_Process reengineering,15,36.58536585365854
+20,Project_Tool availability,9,21.951219512195124
+20,Product_Reliability requirements,9,21.951219512195124
+20,Project_Degree of software reuse,8,19.51219512195122
+20,Developers_Team selection,8,19.51219512195122
+20,Environment_Development team management,5,12.195121951219512
+20,General Information_Application domain,4,9.75609756097561
+20,Environment_Developer incentives policy,4,9.75609756097561
+20,Environment_Developer training,3,7.317073170731708
+20,General Information_Development type,1,2.4390243902439024
+20,Users_Clarity of manual system,1,2.4390243902439024
+20,Developers_Team contracts,1,2.4390243902439024
+20,Project_Degree of risk management,1,2.4390243902439024
+20,Project_Development environment adequacy,1,2.4390243902439024
+20,Developers_Programmers experience in programming language,1,2.4390243902439024
+30,General Information_Estimated  duration,41,100.0
+30,Developers_Team size,41,100.0
+30,Developers_Dedicated team members,41,100.0
+30,General Information_Year of project,41,100.0
+30,General Information_Size of IT department,41,100.0
+30,Size_Object points,41,100.0
+30,Users_User resistance,41,100.0
+30,Developers_Daily working hours,41,100.0
+30,General Information_Size of organization,41,100.0
+30,Product_Product complexity,41,100.0
+30,Developers_Income satisfaction,41,100.0
+30,Product_Specified H/W,41,100.0
+30,Developers_Team cohesion,40,97.5609756097561
+30,Users_Top management opinion of previous system,40,97.5609756097561
+30,Environment_Economic instability impact,39,95.1219512195122
+30,Users_User computer experience,39,95.1219512195122
+30,Environment_Contract maturity,39,95.1219512195122
+30,Developers_DBMS  expert availability,39,95.1219512195122
+30,Developers_Precedentedness,38,92.6829268292683
+30,Project_Process reengineering,38,92.6829268292683
+30,Product_Performance requirements,38,92.6829268292683
+30,Product_Required reusability,37,90.2439024390244
+30,Developers_Software tool experience,36,87.8048780487805
+30,Environment_Developer incentives policy,34,82.92682926829268
+30,Project_Tool availability,32,78.04878048780488
+30,Project_Degree of software reuse,31,75.60975609756098
+30,Product_Reliability requirements,31,75.60975609756098
+30,Environment_Development team management,27,65.85365853658537
+30,Developers_Team selection,20,48.78048780487805
+30,Environment_Government policy impact,19,46.34146341463415
+30,Project_Level of outsourcing,19,46.34146341463415
+30,Project_# Multiple programing languages,14,34.146341463414636
+30,Users_Clarity of manual system,11,26.829268292682926
+30,Developers_Team contracts,11,26.829268292682926
+30,Developers_Programmers experience in programming language,11,26.829268292682926
+30,Environment_Developer hiring policy,10,24.390243902439025
+30,Project_Development environment adequacy,9,21.951219512195124
+30,General Information_Application domain,8,19.51219512195122
+30,Developers_Analysts capability,6,14.634146341463415
+30,Environment_Developer training,5,12.195121951219512
+30,General Information_Development type,4,9.75609756097561
+30,Project_Use of standards,4,9.75609756097561
+30,Project_Degree of risk management,2,4.878048780487805
+30,Environment_Organization management structure clarity,2,4.878048780487805
+30,Developers_Consultant availability,2,4.878048780487805
+30,Users_Top management support,1,2.4390243902439024
+30,Product_Technical documentation,1,2.4390243902439024
+30,Developers_Project manager experience,1,2.4390243902439024
