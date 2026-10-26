@@ -1,0 +1,9 @@
+Counterfactual,Feature,Original,Changed_to
+1,General Information_Estimated  duration,2.0,0.5
+1,Users_Top management support,4.0,1.0
+1,Developers_Precedentedness,2.0,1.0
+2,General Information_Estimated  duration,2.0,1.4
+2,Product_Performance requirements,1.0,1.2
+3,Users_User resistance,1.75,4.25
+3,Developers_Project manager experience,2.0,2.8
+3,Developers_Team size,6.0,2.0

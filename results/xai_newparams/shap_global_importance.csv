@@ -1,0 +1,51 @@
+Feature,Mean_Abs_SHAP
+General Information_Estimated  duration,0.405610019319557
+Developers_Team size,0.27720957054106
+Developers_Dedicated team members,0.12338262727672496
+General Information_Year of project,0.09413568977659423
+Size_Object points,0.08694833354558403
+General Information_Size of IT department,0.06798078540720835
+General Information_Development type,0.05952874326687358
+General Information_Size of organization,0.044377910616229935
+Users_User resistance,0.0394857301515751
+Developers_Daily working hours,0.03488005005778125
+Developers_Team cohesion,0.031261416184161235
+Users_Top management opinion of previous system,0.029391094056551104
+General Information_Application domain,0.02560007791341431
+Environment_Economic instability impact,0.02544027526571389
+Product_Reliability requirements,0.02168245381173816
+Product_Product complexity,0.01888590849629612
+Developers_Precedentedness,0.018079139464810715
+Environment_Government policy impact,0.01671574529682754
+Environment_Contract maturity,0.016345893355865747
+Project_Process reengineering,0.012633408735781409
+Users_Clarity of manual system,0.011185774065379643
+Developers_DBMS  expert availability,0.010867941220875399
+Product_Specified H/W,0.010234363415736455
+Environment_Developer training,0.010128513713236307
+Users_User computer experience,0.00934828001475841
+Developers_Income satisfaction,0.008745738220592025
+Environment_Development team management,0.007604441274050898
+Project_Level of outsourcing,0.007074061615725953
+Environment_Developer hiring policy,0.006160341419268817
+Developers_Team contracts,0.0061307783503216865
+Developers_Project manager experience,0.005477051065453685
+Product_Technical documentation,0.00547163198471618
+Developers_Consultant availability,0.00526513818641279
+Developers_Programmers capability,0.004839237420415023
+Developers_Team selection,0.0038158812700708773
+Product_Performance requirements,0.003789785674420106
+Developers_Software tool experience,0.0033783335714965947
+Project_# Multiple programing languages,0.0033603849023207885
+Product_Required reusability,0.0032140196979661686
+Environment_Developer incentives policy,0.003175780288525292
+Project_Degree of risk management,0.0030522756642579903
+Users_Top management support,0.0029903343757771406
+Project_Development environment adequacy,0.002911458192074332
+Developers_Programmers experience in programming language,0.0025282127965333763
+Developers_Analysts capability,0.0021962602304877463
+Project_Tool availability,0.001690991595713414
+Product_Security requirements,0.0015866101048078933
+Project_Degree of software reuse,0.0015003972822116617
+Project_Use of standards,0.0011444712680113395
+Environment_Organization management structure clarity,0.0011316591345857838
