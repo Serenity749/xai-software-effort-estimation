@@ -4,460 +4,255 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>XAI · SEE Assistant | SEERA Project Manager</title>
-    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background: #f4f7fc;
-            font-family: 'Inter', sans-serif;
-            color: #1a2639;
-            line-height: 1.5;
-            padding: 24px;
+            background: #f4f7fc; font-family: 'Inter', sans-serif; color: #1a2639;
+            line-height: 1.5; padding: 24px;
         }
-        .dashboard {
-            max-width: 1440px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
+        .dashboard { max-width: 1440px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
         .header {
-            background: #ffffff;
-            border-radius: 28px;
-            padding: 18px 24px;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.02);
-            border: 1px solid #e4eaf2;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 16px;
+            background: #ffffff; border-radius: 28px; padding: 18px 24px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.02); border: 1px solid #e4eaf2;
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 16px;
         }
         .title-section h1 {
-            font-weight: 700;
-            font-size: 1.7rem;
+            font-weight: 700; font-size: 1.7rem;
             background: linear-gradient(135deg, #0b2b4f, #1d4a7c);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 4px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; display: flex; align-items: center; gap: 10px;
         }
-        .main-grid {
-            display: grid;
-            grid-template-columns: 380px 1fr;
-            gap: 24px;
+        .status-pill {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 8px 16px; border-radius: 30px; font-size: 0.85rem;
+            font-weight: 600; background: #f0f4fa; color: #2d4b6c;
         }
-        @media (max-width: 1000px) {
-            .main-grid {
-                grid-template-columns: 1fr;
-            }
-        }
+        .status-pill.live { background: #e3f3ed; color: #1e7a5e; }
+        .status-pill.sim { background: #fff4e5; color: #a05a00; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+        .main-grid { display: grid; grid-template-columns: 460px 1fr; gap: 24px; }
+        @media (max-width: 1100px) { .main-grid { grid-template-columns: 1fr; } }
         .panel {
-            background: #ffffff;
-            border-radius: 28px;
-            padding: 22px;
-            border: 1px solid #e4eaf2;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            background: #ffffff; border-radius: 28px; padding: 22px;
+            border: 1px solid #e4eaf2; box-shadow: 0 4px 12px rgba(0,0,0,0.02);
         }
         .panel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;
         }
         .panel-header h3 {
-            font-weight: 600;
-            font-size: 1.2rem;
-            color: #163753;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            font-weight: 600; font-size: 1.2rem; color: #163753;
+            display: flex; align-items: center; gap: 8px;
         }
-        .panel-header i {
-            color: #2f6690;
-            font-size: 1.2rem;
-        }
+        .panel-header i { color: #2f6690; font-size: 1.2rem; }
         .btn {
-            background: #1f4b6e;
-            color: #fff;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 30px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
+            background: #1f4b6e; color: #fff; border: none; padding: 12px 24px;
+            border-radius: 30px; font-weight: 600; font-size: 1rem; cursor: pointer;
+            transition: background 0.2s; display: inline-flex; align-items: center; gap: 8px;
         }
-        .btn:hover {
-            background: #123754;
+        .btn:hover { background: #123754; }
+        .btn:disabled { background: #7a8b9e; cursor: not-allowed; }
+        .btn-sm {
+            padding: 6px 12px; font-size: 0.8rem;
         }
-        .form-group {
-            margin-bottom: 18px;
+        .btn-outline {
+            background: #fff; color: #1f4b6e; border: 1px solid #b8c9dc;
         }
+        /* form */
+        .form-toolbar {
+            display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap;
+        }
+        .group {
+            border: 1px solid #e4eaf2; border-radius: 18px; margin-bottom: 12px;
+            overflow: hidden; background: #fafcff;
+        }
+        .group-header {
+            padding: 12px 16px; background: #f3f7fc; cursor: pointer;
+            display: flex; justify-content: space-between; align-items: center;
+            font-weight: 600; font-size: 0.9rem; color: #1e3b54;
+            user-select: none; transition: background 0.15s;
+        }
+        .group-header:hover { background: #e9f0f8; }
+        .group-header .group-count {
+            font-size: 0.75rem; font-weight: 500; color: #5d6f82;
+            background: #e1e9f2; padding: 2px 10px; border-radius: 20px;
+        }
+        .group-header .chevron { transition: transform 0.2s; color: #5d6f82; }
+        .group.collapsed .chevron { transform: rotate(-90deg); }
+        .group.collapsed .group-body { display: none; }
+        .group-body {
+            padding: 14px 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+        }
+        @media (max-width: 550px) { .group-body { grid-template-columns: 1fr; } }
+        .form-group { margin: 0; }
         .form-group label {
-            display: block;
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: #2e405a;
-            margin-bottom: 6px;
+            display: block; font-weight: 500; font-size: 0.78rem;
+            color: #2e405a; margin-bottom: 4px;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
-        .form-group .input-hint {
-            font-size: 0.75rem;
-            color: #7a8b9e;
-            margin-left: 8px;
+        select, input[type="number"], input[type="text"] {
+            width: 100%; padding: 8px 10px; border: 1px solid #ccd8e5;
+            border-radius: 10px; font-size: 0.85rem; background: #fff;
+            color: #1a2639; font-family: 'Inter', sans-serif;
         }
-        select, input[type="number"] {
-            width: 100%;
-            padding: 10px 14px;
-            border: 1px solid #ccd8e5;
-            border-radius: 14px;
-            font-size: 0.95rem;
-            background: #f9fbfd;
-            color: #1a2639;
-            font-family: 'Inter', sans-serif;
-            transition: border 0.2s;
-        }
-        select:focus, input[type="number"]:focus {
-            outline: none;
-            border-color: #2a6f97;
-            background: #fff;
-        }
-        .range-slider {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .range-slider input[type="range"] {
-            flex: 1;
-            accent-color: #2a6f97;
-        }
-        .range-value {
-            min-width: 40px;
-            font-weight: 600;
-            color: #1f4b6e;
-            text-align: center;
-            background: #eef3f9;
-            padding: 4px 8px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-        }
+        select:focus, input:focus { outline: none; border-color: #2a6f97; }
+        .form-scroll { max-height: 620px; overflow-y: auto; padding-right: 6px; }
+        .form-scroll::-webkit-scrollbar { width: 8px; }
+        .form-scroll::-webkit-scrollbar-thumb { background: #c8d4e2; border-radius: 10px; }
+        /* results */
         .estimate-card {
-            background: #f8fbff;
-            border-radius: 20px;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 20px;
-            border: 1px solid #d5e2f0;
+            background: linear-gradient(145deg, #f8fbff, #edf4fb);
+            border-radius: 20px; padding: 20px; text-align: center;
+            margin-bottom: 20px; border: 1px solid #d5e2f0;
         }
-        .estimate-value {
-            font-size: 2.8rem;
-            font-weight: 700;
-            color: #0f3a5f;
-            line-height: 1.1;
-        }
-        .estimate-unit {
-            font-size: 1rem;
-            color: #5d6f82;
-            font-weight: 500;
-        }
-        .estimate-detail {
-            font-size: 0.85rem;
-            color: #4b5c6e;
-            margin-top: 6px;
-        }
-        .shap-breakdown {
-            background: #f8fafd;
-            border-radius: 16px;
-            padding: 15px;
-            margin-top: 10px;
-        }
-        .shap-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 8px;
-        }
-        .shap-label {
-            width: 140px;
-            font-weight: 500;
-            font-size: 0.85rem;
-        }
+        .estimate-value { font-size: 2.8rem; font-weight: 700; color: #0f3a5f; line-height: 1.1; }
+        .estimate-unit { font-size: 1rem; color: #5d6f82; font-weight: 500; }
+        .estimate-detail { font-size: 0.85rem; color: #4b5c6e; margin-top: 6px; }
+        .shap-breakdown { background: #f8fafd; border-radius: 16px; padding: 15px; margin-top: 10px; }
+        .shap-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .shap-label { width: 165px; font-weight: 500; font-size: 0.78rem; }
         .shap-bar-container {
-            flex: 1;
-            height: 8px;
-            background: #e9eef5;
-            border-radius: 12px;
-            overflow: hidden;
+            flex: 1; height: 8px; background: #e9eef5; border-radius: 12px; overflow: hidden;
         }
-        .shap-bar {
-            height: 8px;
-            border-radius: 12px;
-        }
-        .shap-value {
-            width: 50px;
-            font-weight: 600;
-            font-size: 0.8rem;
-            text-align: right;
-        }
+        .shap-bar { height: 8px; border-radius: 12px; transition: width 0.3s; }
+        .shap-value { width: 55px; font-weight: 600; font-size: 0.78rem; text-align: right; }
         .positive { background: #3f7ea6; }
         .negative { background: #b3543f; }
         .counterfactual-box {
-            background: #fff9f0;
-            border-left: 4px solid #f0a04b;
-            padding: 14px 16px;
-            border-radius: 14px;
-            margin-top: 16px;
+            background: #fff9f0; border-left: 4px solid #f0a04b;
+            padding: 14px 16px; border-radius: 14px; margin-top: 16px;
         }
-        .counterfactual-box h4 {
-            color: #1a3d59;
-            font-size: 0.95rem;
-            margin-bottom: 8px;
-        }
-        .suggestion-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-            margin-bottom: 10px;
-            font-size: 0.9rem;
-        }
+        .counterfactual-box h4 { color: #1a3d59; font-size: 0.95rem; margin-bottom: 8px; }
+        .suggestion-item { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 10px; font-size: 0.88rem; }
         .suggestion-icon { color: #2a6f97; margin-top: 2px; }
         .insight-card {
-            background: #eef7f4;
-            border-radius: 16px;
-            padding: 14px;
-            margin-top: 12px;
+            background: #eef7f4; border-radius: 16px; padding: 14px; margin-top: 12px;
             border: 1px solid #cde5dc;
         }
-        .insight-title {
-            font-weight: 600;
-            color: #1e5a48;
-            margin-bottom: 6px;
-        }
+        .insight-title { font-weight: 600; color: #1e5a48; margin-bottom: 6px; }
         .model-metrics {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-            margin-top: 16px;
-            padding: 12px;
-            background: #f5f9ff;
-            border-radius: 16px;
+            display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px; padding: 12px;
+            background: #f5f9ff; border-radius: 16px;
         }
         .metric-badge {
-            font-size: 0.85rem;
-            background: #ffffff;
-            padding: 6px 12px;
-            border-radius: 20px;
-            border: 1px solid #d5e2f0;
+            font-size: 0.8rem; background: #fff; padding: 6px 12px;
+            border-radius: 20px; border: 1px solid #d5e2f0;
         }
-        .chat-tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 16px;
-        }
+        .chat-tabs { display: flex; gap: 8px; margin-bottom: 16px; }
         .chat-tab {
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            background: #f0f4fa;
-            color: #2d4b6c;
-            border: 1px solid transparent;
-            transition: all 0.2s;
+            padding: 8px 16px; border-radius: 20px; font-weight: 600; font-size: 0.88rem;
+            cursor: pointer; background: #f0f4fa; color: #2d4b6c;
+            border: 1px solid transparent; transition: all 0.2s;
         }
-        .chat-tab.active {
-            background: #1f4b6e;
-            color: #ffffff;
-        }
+        .chat-tab.active { background: #1f4b6e; color: #fff; }
         .chat-container {
-            display: flex;
-            flex-direction: column;
-            height: 500px;
-            border: 1px solid #dde5ef;
-            border-radius: 20px;
-            background: #fafcff;
-            overflow: hidden;
+            display: flex; flex-direction: column; height: 500px;
+            border: 1px solid #dde5ef; border-radius: 20px;
+            background: #fafcff; overflow: hidden;
         }
         .chat-messages {
-            flex: 1;
-            padding: 16px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+            flex: 1; padding: 16px; overflow-y: auto; display: flex;
+            flex-direction: column; gap: 12px;
         }
         .message {
-            max-width: 85%;
-            padding: 10px 14px;
-            border-radius: 16px;
-            font-size: 0.9rem;
-            line-height: 1.4;
-            word-wrap: break-word;
+            max-width: 85%; padding: 10px 14px; border-radius: 16px;
+            font-size: 0.9rem; line-height: 1.45; white-space: pre-wrap; word-wrap: break-word;
         }
         .message.user {
-            align-self: flex-end;
-            background: #1f4b6e;
-            color: #fff;
+            align-self: flex-end; background: #1f4b6e; color: #fff;
             border-bottom-right-radius: 4px;
         }
         .message.assistant {
-            align-self: flex-start;
-            background: #e9f0f7;
-            color: #1a2639;
+            align-self: flex-start; background: #e9f0f7; color: #1a2639;
             border-bottom-left-radius: 4px;
         }
+        .message.assistant strong { color: #1f4b6e; }
         .chat-input-area {
-            display: flex;
-            padding: 12px;
-            border-top: 1px solid #dde5ef;
-            background: #ffffff;
+            display: flex; padding: 12px; border-top: 1px solid #dde5ef; background: #fff;
         }
         .chat-input {
-            flex: 1;
-            padding: 10px 14px;
-            border: 1px solid #ccd8e5;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            outline: none;
+            flex: 1; padding: 10px 14px; border: 1px solid #ccd8e5;
+            border-radius: 20px; font-size: 0.9rem; outline: none;
             font-family: 'Inter', sans-serif;
         }
         .chat-send-btn {
-            margin-left: 8px;
-            background: #1f4b6e;
-            color: #fff;
-            border: none;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s;
+            margin-left: 8px; background: #1f4b6e; color: #fff; border: none;
+            width: 44px; height: 44px; border-radius: 50%; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
         }
         .chat-send-btn:hover { background: #123754; }
         .small-note { font-size: 0.75rem; color: #7a8b9e; margin-top: 8px; }
+        .loading { opacity: 0.6; pointer-events: none; }
     </style>
 </head>
 <body>
 <div class="dashboard">
-    <!-- HEADER -->
     <div class="header">
         <div class="title-section">
             <h1><i class="fas fa-cubes" style="color: #1f4b6e;"></i> XAI · SEE Assistant</h1>
         </div>
+        <div class="status-pill" id="statusPill">
+            <span class="dot"></span><span id="statusText">Checking API…</span>
+        </div>
     </div>
 
-    <!-- MAIN GRID -->
     <div class="main-grid">
-        <!-- LEFT: INPUT PANEL -->
+        <!-- LEFT: DYNAMIC FORM -->
         <div class="panel">
             <div class="panel-header">
                 <h3><i class="fas fa-sliders-h"></i> Project Parameters</h3>
+                <span class="metric-badge" id="featureCountBadge">0 features</span>
             </div>
-            <form id="project-form" onsubmit="return false;">
-                <div class="form-group">
-                    <label>Function Points <span class="input-hint">(size)</span></label>
-                    <div class="range-slider">
-                        <input type="range" id="functionPoints" min="50" max="500" value="220" step="5">
-                        <span class="range-value" id="fpValue">220</span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Team Size <span class="input-hint">(persons)</span></label>
-                    <div class="range-slider">
-                        <input type="range" id="teamSize" min="2" max="20" value="8" step="1">
-                        <span class="range-value" id="tsValue">8</span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Requirements Clarity</label>
-                    <select id="reqClarity">
-                        <option value="low">Low</option>
-                        <option value="medium" selected>Medium</option>
-                        <option value="high">High</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Development Type</label>
-                    <select id="devType">
-                        <option value="new" selected>New Development</option>
-                        <option value="enhancement">Enhancement</option>
-                        <option value="maintenance">Maintenance</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Database Complexity</label>
-                    <select id="dbComplexity">
-                        <option value="low">Low</option>
-                        <option value="medium" selected>Medium</option>
-                        <option value="high">High</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Platform Complexity</label>
-                    <select id="platformComplexity">
-                        <option value="low">Low</option>
-                        <option value="medium" selected>Medium</option>
-                        <option value="high">High</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Team Experience (Language)</label>
-                    <select id="teamExp">
-                        <option value="low">Low</option>
-                        <option value="medium" selected>Medium</option>
-                        <option value="high">High</option>
-                    </select>
-                </div>
-                <button type="button" class="btn" id="estimateBtn" style="width:100%; justify-content:center;">
-                    <i class="fas fa-calculator"></i> Generate Estimate & Insights
-                </button>
-            </form>
+            <div class="form-toolbar">
+                <button class="btn btn-outline btn-sm" onclick="expandAll()"><i class="fas fa-expand-alt"></i> Expand All</button>
+                <button class="btn btn-outline btn-sm" onclick="collapseAll()"><i class="fas fa-compress-alt"></i> Collapse All</button>
+                <button class="btn btn-outline btn-sm" onclick="resetDefaults()"><i class="fas fa-undo"></i> Reset</button>
+            </div>
+            <div class="form-scroll" id="formRoot"></div>
+            <button type="button" class="btn" id="estimateBtn" style="width:100%; justify-content:center; margin-top: 14px;">
+                <i class="fas fa-calculator"></i> Generate Estimate & Insights
+            </button>
+            <div class="small-note">
+                <i class="fas fa-info-circle"></i> Inputs auto-generated from <code>FEATURES_CONFIG</code>. Replace with your <code>model_metadata.json</code> <code>feature_columns</code> to match your trained CatBoost model exactly.
+            </div>
         </div>
 
-        <!-- RIGHT: VISUAL + CHAT PANEL -->
+        <!-- RIGHT: RESULTS + CHAT -->
         <div class="panel">
             <div class="chat-tabs">
                 <div class="chat-tab active" data-tab="visual"><i class="fas fa-chart-bar"></i> Visual Breakdown</div>
                 <div class="chat-tab" data-tab="chat"><i class="fas fa-comments"></i> Chat with XAI Assistant</div>
             </div>
 
-            <!-- Visual Breakdown Tab Content -->
             <div id="visual-tab" class="tab-content">
                 <div class="estimate-card">
                     <div style="font-size:0.9rem; color:#4b5c6e;">Estimated Effort</div>
                     <div class="estimate-value" id="estimatedEffort">--</div>
                     <div class="estimate-unit">person-months (PM)</div>
-                    <div class="estimate-detail" id="estimateRange">Model confidence interval: --</div>
+                    <div class="estimate-detail" id="estimateRange">Enter parameters and generate an estimate.</div>
                 </div>
 
                 <div style="font-weight:600; margin-bottom:8px; color:#1e3b54;">
                     <i class="fas fa-sitemap"></i> Feature Contributions (SHAP)
                 </div>
-                <div class="shap-breakdown" id="shapContainer"></div>
+                <div class="shap-breakdown" id="shapContainer">
+                    <div class="small-note">SHAP values will appear here after generating an estimate.</div>
+                </div>
 
                 <div class="counterfactual-box" id="counterfactualBox">
-                    <h4><i class="fas fa-lightbulb"></i> How to reduce effort (Counterfactual Suggestions)</h4>
-                    <div id="suggestionsList"></div>
+                    <h4><i class="fas fa-lightbulb"></i> Suggestions to reduce effort</h4>
+                    <div id="suggestionsList">
+                        <div class="small-note">Generate an estimate to see improvement suggestions.</div>
+                    </div>
                 </div>
 
                 <div class="insight-card" id="insightCard">
                     <div class="insight-title"><i class="fas fa-tachometer-alt"></i> Productivity Insights</div>
-                    <div id="insightsText"></div>
+                    <div id="insightsText">
+                        <div class="small-note">Insights will appear here.</div>
+                    </div>
                 </div>
 
                 <div class="model-metrics">
@@ -467,12 +262,8 @@
                     <span class="metric-badge"><i class="fas fa-sync-alt"></i> Stability: 0.91</span>
                     <span class="metric-badge"><i class="fas fa-venus-mars"></i> MMRE: 0.36</span>
                 </div>
-                <div class="small-note">
-                    <i class="fas fa-asterisk"></i> Model evaluated using Leave-One-Organization-Out CV. SA is primary metric.
-                </div>
             </div>
 
-            <!-- Chat Tab Content (initially hidden) -->
             <div id="chat-tab" class="tab-content" style="display:none;">
                 <div class="chat-container">
                     <div class="chat-messages" id="chatMessages">
@@ -491,339 +282,504 @@
 </div>
 
 <script>
-    // ------------------------------
-    // 1. Model simulation functions
-    // ------------------------------
-    function computeEstimate(fp, teamSize, reqClarity, devType, dbComplexity, platformComplexity, teamExp) {
-        let base = 15;
-        base += fp * 0.08;
-        let teamFactor = 0;
-        if (teamSize <= 5) teamFactor = (5 - teamSize) * 1.2;
-        else if (teamSize > 10) teamFactor = (teamSize - 10) * 0.8;
-        base += teamFactor;
-        const clarityImpact = { low: 6, medium: 2, high: -2 };
-        base += clarityImpact[reqClarity] || 0;
-        const devTypeImpact = { new: 4, enhancement: 1, maintenance: -3 };
-        base += devTypeImpact[devType] || 0;
-        const dbImpact = { low: -2, medium: 1, high: 5 };
-        base += dbImpact[dbComplexity] || 0;
-        const platformImpact = { low: -2, medium: 2, high: 7 };
-        base += platformImpact[platformComplexity] || 0;
-        const expImpact = { low: 5, medium: 1, high: -4 };
-        base += expImpact[teamExp] || 0;
-        return Math.max(5, Math.round(base * 10) / 10);
-    }
+/* ============================================================
+   REPLACE THIS ARRAY WITH YOUR model_metadata.json CONTENTS
+   ------------------------------------------------------------
+   The backend Flask API expects the SAME keys as your CatBoost
+   model's training columns. Copy them from
+   `models/model_metadata.json` → `feature_columns` and adapt.
 
-    function computeSHAP(fp, teamSize, reqClarity, devType, dbComplexity, platformComplexity, teamExp) {
-        let contributions = [];
-        contributions.push({ label: "Function Points", value: fp * 0.08, positive: true });
-        let teamFactor = 0;
-        if (teamSize <= 5) teamFactor = (5 - teamSize) * 1.2;
-        else if (teamSize > 10) teamFactor = (teamSize - 10) * 0.8;
-        contributions.push({ label: "Team Size", value: teamFactor, positive: teamFactor > 0 });
-        const clarityImpact = { low: 6, medium: 2, high: -2 };
-        let clarityVal = clarityImpact[reqClarity];
-        contributions.push({ label: "Req. Clarity", value: clarityVal, positive: clarityVal > 0 });
-        const devTypeImpact = { new: 4, enhancement: 1, maintenance: -3 };
-        let devVal = devTypeImpact[devType];
-        contributions.push({ label: "Dev. Type", value: devVal, positive: devVal > 0 });
-        const dbImpact = { low: -2, medium: 1, high: 5 };
-        let dbVal = dbImpact[dbComplexity];
-        contributions.push({ label: "DB Complexity", value: dbVal, positive: dbVal > 0 });
-        const platformImpact = { low: -2, medium: 2, high: 7 };
-        let platVal = platformImpact[platformComplexity];
-        contributions.push({ label: "Platform", value: platVal, positive: platVal > 0 });
-        const expImpact = { low: 5, medium: 1, high: -4 };
-        let expVal = expImpact[teamExp];
-        contributions.push({ label: "Team Exp", value: expVal, positive: expVal > 0 });
-        return contributions;
-    }
+   Schema for each item:
+     { name: 'ModelColumnName', label: 'Human readable',
+       type: 'number'|'select', group: 'GroupName',
+       min, max, step, default, options: [{value, label}] }
 
-    function generateSuggestions(fp, teamSize, reqClarity, devType, dbComplexity, platformComplexity, teamExp) {
-        let suggestions = [];
-        if (reqClarity === 'low' || reqClarity === 'medium') {
-            suggestions.push({
-                icon: 'fa-arrow-up',
-                text: `Increase Requirements Clarity from "${reqClarity}" to "high" — estimated effort reduction: ${reqClarity === 'low' ? '4 PM' : '3 PM'}.`,
-                impact: reqClarity === 'low' ? 4 : 3
-            });
-        }
-        if (devType === 'new') {
-            suggestions.push({
-                icon: 'fa-sync-alt',
-                text: `Consider changing Development Type from "New Development" to "Enhancement" — could reduce effort by 3 PM.`,
-                impact: 3
-            });
-        }
-        if (dbComplexity === 'high') {
-            suggestions.push({
-                icon: 'fa-database',
-                text: `Reduce Database Complexity from "high" to "medium" — estimated saving: 4 PM.`,
-                impact: 4
-            });
-        }
-        if (platformComplexity === 'high') {
-            suggestions.push({
-                icon: 'fa-server',
-                text: `Lower Platform Complexity from "high" to "medium" — estimated saving: 5 PM.`,
-                impact: 5
-            });
-        }
-        if (teamExp === 'low') {
-            suggestions.push({
-                icon: 'fa-users',
-                text: `Improve Team Experience from "low" to "medium" — estimated saving: 4 PM.`,
-                impact: 4
-            });
-        }
-        if (teamSize > 10) {
-            suggestions.push({
-                icon: 'fa-user-minus',
-                text: `Optimize team size from ${teamSize} to 10 members — reduce communication overhead, saving ${(teamSize-10)*0.8} PM.`,
-                impact: (teamSize-10)*0.8
-            });
-        }
-        if (suggestions.length === 0) {
-            suggestions.push({
-                icon: 'fa-check',
-                text: 'Your project parameters are already near-optimal. No major effort reduction opportunities identified.',
-                impact: 0
-            });
-        }
-        suggestions.sort((a,b) => b.impact - a.impact);
-        return suggestions;
-    }
+   The 50 entries below are a realistic SEERA-based placeholder
+   derived from the published dataset structure. Swap them out!
+   ============================================================ */
+const FEATURES_CONFIG = [
+    // ---------- Size & Scope (7) ----------
+    { name: 'Function_Points',       label: 'Function Points',       type: 'number', group: '📐 Size & Scope', min: 10, max: 1500, step: 5,   default: 220 },
+    { name: 'Object_Points',         label: 'Object Points',         type: 'number', group: '📐 Size & Scope', min: 0,  max: 1000, step: 5,   default: 80 },
+    { name: 'LOC_Estimate',          label: 'LOC Estimate',          type: 'number', group: '📐 Size & Scope', min: 0,  max: 500000, step: 500, default: 25000 },
+    { name: 'Number_of_Screens',     label: 'Screens',               type: 'number', group: '📐 Size & Scope', min: 0,  max: 500, step: 1,    default: 25 },
+    { name: 'Number_of_Reports',     label: 'Reports',               type: 'number', group: '📐 Size & Scope', min: 0,  max: 300, step: 1,    default: 12 },
+    { name: 'Number_of_Use_Cases',   label: 'Use Cases',             type: 'number', group: '📐 Size & Scope', min: 0,  max: 500, step: 1,    default: 40 },
+    { name: 'Number_of_Tables',      label: 'DB Tables',             type: 'number', group: '📐 Size & Scope', min: 0,  max: 500, step: 1,    default: 30 },
 
-    function generateInsights(fp, teamSize, reqClarity, devType, dbComplexity, platformComplexity, teamExp) {
-        let insights = [];
-        if (reqClarity === 'low') insights.push('🔍 Low requirements clarity often leads to rework. Consider investing in requirements elicitation.');
-        if (teamSize > 10) insights.push('👥 Large team size increases communication overhead. Consider breaking into sub-teams or reducing size if possible.');
-        if (dbComplexity === 'high' && platformComplexity === 'high') insights.push('⚠️ High database and platform complexity together amplify effort. Evaluate if architecture can be simplified.');
-        if (teamExp === 'low') insights.push('📉 Low team experience with language can lead to inefficiencies. Consider training or pairing with experienced members.');
-        if (devType === 'new') insights.push('🆕 New development projects inherently require more effort. Reuse existing components where possible.');
-        if (insights.length === 0) insights.push('✅ Current parameter combination is relatively efficient. Maintain good practices.');
-        return insights;
-    }
+    // ---------- Team (6) ----------
+    { name: 'Team_Size',             label: 'Team Size',             type: 'number', group: '👥 Team', min: 1, max: 50, step: 1, default: 8 },
+    { name: 'Team_Exp_Years',        label: 'Avg Experience (years)', type: 'number', group: '👥 Team', min: 0, max: 30, step: 0.5, default: 3 },
+    { name: 'Team_Exp_Lang',         label: 'Language Experience',   type: 'select', group: '👥 Team', default: 'medium',
+      options: [ {value:'low',label:'Low'}, {value:'medium',label:'Medium'}, {value:'high',label:'High'} ] },
+    { name: 'Team_Turnover',         label: 'Team Turnover',         type: 'select', group: '👥 Team', default: 'medium',
+      options: [ {value:'low',label:'Low'}, {value:'medium',label:'Medium'}, {value:'high',label:'High'} ] },
+    { name: 'Team_Satisfaction',     label: 'Team Satisfaction',     type: 'select', group: '👥 Team', default: 'medium',
+      options: [ {value:'low',label:'Low'}, {value:'medium',label:'Medium'}, {value:'high',label:'High'} ] },
+    { name: 'Team_Location',         label: 'Team Location',         type: 'select', group: '👥 Team', default: 'onsite',
+      options: [ {value:'onsite',label:'On-site'}, {value:'remote',label:'Remote'}, {value:'hybrid',label:'Hybrid'} ] },
 
-    // ------------------------------
-    // 2. UI update functions
-    // ------------------------------
-    function getCurrentParams() {
+    // ---------- Requirements (5) ----------
+    { name: 'Req_Clarity',           label: 'Requirements Clarity',  type: 'select', group: '📋 Requirements', default: 'medium',
+      options: [ {value:'low',label:'Low'}, {value:'medium',label:'Medium'}, {value:'high',label:'High'} ] },
+    { name: 'Req_Stability',         label: 'Requirements Stability',type: 'select', group: '📋 Requirements', default: 'medium',
+      options: [ {value:'low',label:'Low'}, {value:'medium',label:'Medium'}, {value:'high',label:'High'} ] },
+    { name: 'Req_Documentation',     label: 'Documentation Level',   type: 'select', group: '📋 Requirements', default: 'medium',
+      options: [ {value:'low',label:'Low'}, {value:'medium',label:'Medium'}, {value:'high',label:'High'} ] },
+    { name: 'Client_Involvement',    label: 'Client Involvement',    type: 'select', group: '📋 Requirements', default: 'medium',
+      options: [ {value:'low',label:'Low'}, {value:'medium',label:'Medium'}, {value:'high',label:'High'} ] },
+    { name: 'User_Count_Estimated',  label: 'Estimated Users',       type: 'number', group: '📋 Requirements', min: 0, max: 1000000, step: 100, default: 500 },
+
+    // ---------- Environment (7) ----------
+    { name: 'Platform_Complexity',   label: 'Platform Complexity',   type: 'select', group: '🖥️ Environment', default: 'medium',
+      options: [ {value:'low',label:'Low'}, {value:'medium',label:'Medium'}, {value:'high',label:'High'} ] },
+    { name: 'DB_Complexity',         label: 'Database Complexity',   type: 'select', group: '🖥️ Environment', default: 'medium',
+      options: [ {value:'low',label:'Low'}, {value:'medium',label:'Medium'}, {value:'high',label:'High'} ] },
+    { name: 'UI_Complexity',         label: 'UI Complexity',         type: 'select', group: '🖥️ Environment', default: 'medium',
+      options: [ {value:'low',label:'Low'}, {value:'medium',label:'Medium'}, {value:'high',label:'High'} ] },
+    { name: 'Integration_Complexity',label: 'Integration Complexity',type: 'select', group: '🖥️ Environment', default: 'medium',
+      options: [ {value:'low',label:'Low'}, {value:'medium',label:'Medium'}, {value:'high',label:'High'} ] },
+    { name: 'Tools_Maturity',        label: 'Tools Maturity',        type: 'select', group: '🖥️ Environment', default: 'medium',
+      options: [ {value:'low',label:'Low'}, {value:'medium',label:'Medium'}, {value:'high',label:'High'} ] },
+    { name: 'Multiple_Platforms',    label: 'Multi-Platform',        type: 'select', group: '🖥️ Environment', default: 'no',
+      options: [ {value:'no',label:'No'}, {value:'yes',label:'Yes'} ] },
+    { name: 'Security_Level',        label: 'Security Level',        type: 'select', group: '🖥️ Environment', default: 'medium',
+      options: [ {value:'low',label:'Low'}, {value:'medium',label:'Medium'}, {value:'high',label:'High'} ] },
+
+    // ---------- Organization & Client (6) ----------
+    { name: 'Org_Type',              label: 'Organization Type',     type: 'select', group: '🏢 Organization & Client', default: 'private',
+      options: [ {value:'private',label:'Private'}, {value:'public',label:'Public'}, {value:'university',label:'University'}, {value:'freelance',label:'Freelance'} ] },
+    { name: 'Org_Size',              label: 'Organization Size',     type: 'select', group: '🏢 Organization & Client', default: 'small',
+      options: [ {value:'small',label:'Small (<50)'}, {value:'medium',label:'Medium (50-250)'}, {value:'large',label:'Large (>250)'} ] },
+    { name: 'Management_Structure',  label: 'Management Structure',  type: 'select', group: '🏢 Organization & Client', default: 'medium',
+      options: [ {value:'low',label:'Low'}, {value:'medium',label:'Medium'}, {value:'high',label:'High'} ] },
+    { name: 'Client_Type',           label: 'Client Type',           type: 'select', group: '🏢 Organization & Client', default: 'external',
+      options: [ {value:'internal',label:'Internal'}, {value:'external',label:'External'} ] },
+    { name: 'Application_Domain',    label: 'Application Domain',    type: 'select', group: '🏢 Organization & Client', default: 'business',
+      options: [ {value:'business',label:'Business'}, {value:'web',label:'Web'}, {value:'mobile',label:'Mobile'}, {value:'enterprise',label:'Enterprise'}, {value:'scientific',label:'Scientific'} ] },
+    { name: 'Project_Country',       label: 'Country',               type: 'select', group: '🏢 Organization & Client', default: 'sudan',
+      options: [ {value:'sudan',label:'Sudan'}, {value:'other',label:'Other'} ] },
+
+    // ---------- Process & Methodology (7) ----------
+    { name: 'Dev_Type',              label: 'Development Type',      type: 'select', group: '⚙️ Process & Methodology', default: 'new',
+      options: [ {value:'new',label:'New'}, {value:'enhancement',label:'Enhancement'}, {value:'maintenance',label:'Maintenance'} ] },
+    { name: 'Methodology',           label: 'Methodology',           type: 'select', group: '⚙️ Process & Methodology', default: 'agile',
+      options: [ {value:'agile',label:'Agile'}, {value:'waterfall',label:'Waterfall'}, {value:'hybrid',label:'Hybrid'} ] },
+    { name: 'CMMI_Level',            label: 'CMMI Level',            type: 'select', group: '⚙️ Process & Methodology', default: 'none',
+      options: [ {value:'none',label:'None'}, {value:'1',label:'Level 1'}, {value:'2',label:'Level 2'}, {value:'3',label:'Level 3'}, {value:'4',label:'Level 4'}, {value:'5',label:'Level 5'} ] },
+    { name: 'Risk_Level',            label: 'Risk Level',            type: 'select', group: '⚙️ Process & Methodology', default: 'medium',
+      options: [ {value:'low',label:'Low'}, {value:'medium',label:'Medium'}, {value:'high',label:'High'} ] },
+    { name: 'Prototyping',           label: 'Prototyping Used',      type: 'select', group: '⚙️ Process & Methodology', default: 'no',
+      options: [ {value:'no',label:'No'}, {value:'yes',label:'Yes'} ] },
+    { name: 'Reuse_Level',           label: 'Reuse Level',           type: 'select', group: '⚙️ Process & Methodology', default: 'medium',
+      options: [ {value:'low',label:'Low'}, {value:'medium',label:'Medium'}, {value:'high',label:'High'} ] },
+    { name: 'Outsourced',            label: 'Outsourced',            type: 'select', group: '⚙️ Process & Methodology', default: 'no',
+      options: [ {value:'no',label:'No'}, {value:'yes',label:'Yes'} ] },
+
+    // ---------- Additional (12) ----------
+    { name: 'Testing_Effort_Pct',    label: 'Testing Effort %',      type: 'number', group: '📊 Additional Metrics', min: 0, max: 100, step: 1, default: 25 },
+    { name: 'Documentation_Effort_Pct', label: 'Doc. Effort %',      type: 'number', group: '📊 Additional Metrics', min: 0, max: 100, step: 1, default: 10 },
+    { name: 'Quality_Requirements',  label: 'Quality Requirements',  type: 'select', group: '📊 Additional Metrics', default: 'medium',
+      options: [ {value:'low',label:'Low'}, {value:'medium',label:'Medium'}, {value:'high',label:'High'} ] },
+    { name: 'Performance_Requirement', label: 'Performance Req.',    type: 'select', group: '📊 Additional Metrics', default: 'medium',
+      options: [ {value:'low',label:'Low'}, {value:'medium',label:'Medium'}, {value:'high',label:'High'} ] },
+    { name: 'Delivery_Deadline_Pressure', label: 'Deadline Pressure',type: 'select', group: '📊 Additional Metrics', default: 'medium',
+      options: [ {value:'low',label:'Low'}, {value:'medium',label:'Medium'}, {value:'high',label:'High'} ] },
+    { name: 'Number_of_Interfaces',  label: 'External Interfaces',   type: 'number', group: '📊 Additional Metrics', min: 0, max: 100, step: 1, default: 5 },
+    { name: 'Number_of_Modules',     label: 'Modules',               type: 'number', group: '📊 Additional Metrics', min: 0, max: 100, step: 1, default: 12 },
+    { name: 'Number_of_Classes',     label: 'Classes',               type: 'number', group: '📊 Additional Metrics', min: 0, max: 500, step: 1, default: 45 },
+    { name: 'Language_Used',         label: 'Primary Language',      type: 'select', group: '📊 Additional Metrics', default: 'java',
+      options: [ {value:'java',label:'Java'}, {value:'python',label:'Python'}, {value:'javascript',label:'JavaScript'}, {value:'csharp',label:'C#'}, {value:'php',label:'PHP'}, {value:'other',label:'Other'} ] },
+    { name: 'DBMS_Used',             label: 'DBMS',                  type: 'select', group: '📊 Additional Metrics', default: 'mysql',
+      options: [ {value:'mysql',label:'MySQL'}, {value:'postgres',label:'PostgreSQL'}, {value:'oracle',label:'Oracle'}, {value:'mssql',label:'SQL Server'}, {value:'nosql',label:'NoSQL'}, {value:'other',label:'Other'} ] },
+    { name: 'Has_Existing_Codebase', label: 'Existing Codebase',     type: 'select', group: '📊 Additional Metrics', default: 'no',
+      options: [ {value:'no',label:'No'}, {value:'yes',label:'Yes'} ] },
+    { name: 'Previous_Similar_Project', label: 'Similar Past Project',type: 'select', group: '📊 Additional Metrics', default: 'no',
+      options: [ {value:'no',label:'No'}, {value:'yes',label:'Yes'} ] }
+];
+
+/* ============================================================
+   BACKEND CONFIG
+   ============================================================ */
+const API_URL = 'http://localhost:5000/predict';
+let API_LIVE = false;
+let lastResult = null;  // { estimate, shap: [{feature, contribution}] }
+
+/* ============================================================
+   RENDER DYNAMIC FORM
+   ============================================================ */
+function renderForm() {
+    const root = document.getElementById('formRoot');
+    root.innerHTML = '';
+    const groups = {};
+    FEATURES_CONFIG.forEach(f => {
+        (groups[f.group] = groups[f.group] || []).push(f);
+    });
+
+    let total = 0;
+    Object.keys(groups).forEach(groupName => {
+        const feats = groups[groupName];
+        total += feats.length;
+
+        const groupDiv = document.createElement('div');
+        groupDiv.className = 'group';
+
+        const header = document.createElement('div');
+        header.className = 'group-header';
+        header.innerHTML = `<span>${groupName}</span>
+            <span style="display:flex;gap:8px;align-items:center;">
+                <span class="group-count">${feats.length}</span>
+                <i class="fas fa-chevron-down chevron"></i>
+            </span>`;
+        header.addEventListener('click', () => groupDiv.classList.toggle('collapsed'));
+        groupDiv.appendChild(header);
+
+        const body = document.createElement('div');
+        body.className = 'group-body';
+
+        feats.forEach(feat => {
+            const wrap = document.createElement('div');
+            wrap.className = 'form-group';
+            const label = document.createElement('label');
+            label.textContent = feat.label;
+            label.title = feat.name;
+            wrap.appendChild(label);
+
+            let input;
+            if (feat.type === 'select') {
+                input = document.createElement('select');
+                feat.options.forEach(opt => {
+                    const o = document.createElement('option');
+                    o.value = opt.value;
+                    o.textContent = opt.label;
+                    if (String(opt.value) === String(feat.default)) o.selected = true;
+                    input.appendChild(o);
+                });
+            } else {
+                input = document.createElement('input');
+                input.type = 'number';
+                input.min = feat.min ?? '';
+                input.max = feat.max ?? '';
+                input.step = feat.step ?? 1;
+                input.value = feat.default ?? 0;
+            }
+            input.id = 'feat_' + feat.name;
+            input.dataset.featName = feat.name;
+            wrap.appendChild(input);
+            body.appendChild(wrap);
+        });
+
+        groupDiv.appendChild(body);
+        root.appendChild(groupDiv);
+    });
+
+    document.getElementById('featureCountBadge').textContent = total + ' features';
+}
+
+function expandAll() { document.querySelectorAll('.group').forEach(g => g.classList.remove('collapsed')); }
+function collapseAll() { document.querySelectorAll('.group').forEach(g => g.classList.add('collapsed')); }
+function resetDefaults() {
+    FEATURES_CONFIG.forEach(f => {
+        const el = document.getElementById('feat_' + f.name);
+        if (el) el.value = f.default;
+    });
+}
+
+/* ============================================================
+   BUILD PAYLOAD FROM FORM
+   ============================================================ */
+function getCurrentParams() {
+    const params = {};
+    FEATURES_CONFIG.forEach(f => {
+        const el = document.getElementById('feat_' + f.name);
+        if (!el) return;
+        let v = el.value;
+        if (f.type === 'number') v = parseFloat(v);
+        params[f.name] = v;
+    });
+    return params;
+}
+
+/* ============================================================
+   FALLBACK LOCAL MODEL (when API not running)
+   ============================================================ */
+function simulateEstimate(p) {
+    let base = 15;
+    base += (p.Function_Points || 220) * 0.06;
+    base += (p.Object_Points || 0) * 0.04;
+    base += ((p.LOC_Estimate || 0) / 1000) * 0.5;
+    base += (p.Number_of_Screens || 0) * 0.15;
+    base += (p.Number_of_Reports || 0) * 0.2;
+    base += (p.Number_of_Use_Cases || 0) * 0.1;
+    base += (p.Number_of_Tables || 0) * 0.08;
+
+    const ts = p.Team_Size || 8;
+    if (ts <= 5) base += (5 - ts) * 1.2;
+    else if (ts > 10) base += (ts - 10) * 0.8;
+
+    const multi = { low: -2, medium: 2, high: 6 };
+    base += multi[p.Platform_Complexity] || 2;
+    base += multi[p.DB_Complexity] || 1;
+    base += multi[p.UI_Complexity] || 1;
+    base += multi[p.Integration_Complexity] || 1;
+
+    const clarity = { low: 6, medium: 2, high: -2 };
+    base += clarity[p.Req_Clarity] || 0;
+    base += clarity[p.Req_Stability] || 0;
+
+    const devType = { new: 4, enhancement: 1, maintenance: -3 };
+    base += devType[p.Dev_Type] || 0;
+
+    const exp = { low: 5, medium: 1, high: -4 };
+    base += exp[p.Team_Exp_Lang] || 0;
+
+    const risk = { low: -2, medium: 1, high: 4 };
+    base += risk[p.Risk_Level] || 0;
+
+    const method = { agile: -1, waterfall: 2, hybrid: 0 };
+    base += method[p.Methodology] || 0;
+
+    return Math.max(5, Math.round(base * 10) / 10);
+}
+
+function simulateShap(p) {
+    const out = [];
+    out.push({ feature: 'Function_Points',     contribution: (p.Function_Points||0) * 0.06 });
+    out.push({ feature: 'LOC_Estimate',        contribution: ((p.LOC_Estimate||0)/1000) * 0.5 });
+    out.push({ feature: 'Team_Size',           contribution: p.Team_Size > 10 ? (p.Team_Size-10)*0.8 : (p.Team_Size<6 ? (6-p.Team_Size)*1.2 : 0) });
+    out.push({ feature: 'Platform_Complexity', contribution: ({low:-2,medium:2,high:6})[p.Platform_Complexity] || 0 });
+    out.push({ feature: 'DB_Complexity',       contribution: ({low:-2,medium:1,high:5})[p.DB_Complexity] || 0 });
+    out.push({ feature: 'Req_Clarity',         contribution: ({low:6,medium:2,high:-2})[p.Req_Clarity] || 0 });
+    out.push({ feature: 'Dev_Type',            contribution: ({new:4,enhancement:1,maintenance:-3})[p.Dev_Type] || 0 });
+    out.push({ feature: 'Team_Exp_Lang',       contribution: ({low:5,medium:1,high:-4})[p.Team_Exp_Lang] || 0 });
+    out.push({ feature: 'Integration_Complexity', contribution: ({low:-1,medium:1,high:4})[p.Integration_Complexity] || 0 });
+    return out;
+}
+
+/* ============================================================
+   CALL API (with fallback)
+   ============================================================ */
+async function getPrediction(params) {
+    try {
+        const res = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(params)
+        });
+        if (!res.ok) throw new Error('API status ' + res.status);
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+        setStatus(true);
         return {
-            fp: parseInt(document.getElementById('functionPoints').value),
-            teamSize: parseInt(document.getElementById('teamSize').value),
-            reqClarity: document.getElementById('reqClarity').value,
-            devType: document.getElementById('devType').value,
-            dbComplexity: document.getElementById('dbComplexity').value,
-            platformComplexity: document.getElementById('platformComplexity').value,
-            teamExp: document.getElementById('teamExp').value
+            estimate: data.estimated_effort_pm,
+            shap: data.shap_values || []
+        };
+    } catch (err) {
+        console.warn('API unavailable, using local simulation:', err.message);
+        setStatus(false);
+        return {
+            estimate: simulateEstimate(params),
+            shap: simulateShap(params)
         };
     }
+}
 
-    function updateVisualDashboard() {
-        const p = getCurrentParams();
-        document.getElementById('fpValue').textContent = p.fp;
-        document.getElementById('tsValue').textContent = p.teamSize;
+function setStatus(live) {
+    API_LIVE = live;
+    const pill = document.getElementById('statusPill');
+    const text = document.getElementById('statusText');
+    if (live) {
+        pill.className = 'status-pill live';
+        text.textContent = 'API Connected · Live predictions';
+    } else {
+        pill.className = 'status-pill sim';
+        text.textContent = 'Simulation Mode · start Flask API for live';
+    }
+}
 
-        const estimate = computeEstimate(p.fp, p.teamSize, p.reqClarity, p.devType, p.dbComplexity, p.platformComplexity, p.teamExp);
-        document.getElementById('estimatedEffort').textContent = estimate.toFixed(1);
-        document.getElementById('estimateRange').textContent = `Model confidence interval: ${ (estimate*0.85).toFixed(1) } - ${ (estimate*1.15).toFixed(1) } PM`;
+/* ============================================================
+   UPDATE UI
+   ============================================================ */
+async function updateVisualDashboard() {
+    const btn = document.getElementById('estimateBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
 
-        const contributions = computeSHAP(p.fp, p.teamSize, p.reqClarity, p.devType, p.dbComplexity, p.platformComplexity, p.teamExp);
+    try {
+        const params = getCurrentParams();
+        const result = await getPrediction(params);
+        lastResult = result;
+
+        // Estimate
+        document.getElementById('estimatedEffort').textContent = result.estimate.toFixed(1);
+        document.getElementById('estimateRange').textContent =
+            `Confidence interval: ${(result.estimate*0.85).toFixed(1)} – ${(result.estimate*1.15).toFixed(1)} PM`;
+
+        // SHAP top 8
         const shapContainer = document.getElementById('shapContainer');
         shapContainer.innerHTML = '';
-        contributions.forEach(contrib => {
+        const topShap = [...result.shap]
+            .sort((a,b) => Math.abs(b.contribution) - Math.abs(a.contribution))
+            .slice(0, 8);
+        const maxAbs = Math.max(...topShap.map(c => Math.abs(c.contribution)), 0.001);
+        topShap.forEach(item => {
             const row = document.createElement('div');
             row.className = 'shap-row';
             const label = document.createElement('span');
             label.className = 'shap-label';
-            label.textContent = contrib.label;
+            label.textContent = item.feature.length > 24 ? item.feature.substring(0,22)+'…' : item.feature;
+            label.title = item.feature;
             const barContainer = document.createElement('div');
             barContainer.className = 'shap-bar-container';
             const bar = document.createElement('div');
-            bar.className = `shap-bar ${contrib.positive ? 'positive' : 'negative'}`;
-            const maxAbs = Math.max(...contributions.map(c => Math.abs(c.value)));
-            const widthPercent = maxAbs > 0 ? (Math.abs(contrib.value) / maxAbs) * 100 : 0;
-            bar.style.width = widthPercent + '%';
+            bar.className = 'shap-bar ' + (item.contribution >= 0 ? 'positive' : 'negative');
+            bar.style.width = (Math.abs(item.contribution)/maxAbs*100) + '%';
             barContainer.appendChild(bar);
             const value = document.createElement('span');
             value.className = 'shap-value';
-            value.textContent = (contrib.value > 0 ? '+' : '') + contrib.value.toFixed(1);
-            row.appendChild(label);
-            row.appendChild(barContainer);
-            row.appendChild(value);
+            value.textContent = (item.contribution>0?'+':'') + item.contribution.toFixed(2);
+            row.appendChild(label); row.appendChild(barContainer); row.appendChild(value);
             shapContainer.appendChild(row);
         });
 
-        const suggestions = generateSuggestions(p.fp, p.teamSize, p.reqClarity, p.devType, p.dbComplexity, p.platformComplexity, p.teamExp);
+        // Suggestions
         const suggestionsList = document.getElementById('suggestionsList');
         suggestionsList.innerHTML = '';
-        suggestions.forEach(sug => {
-            const item = document.createElement('div');
-            item.className = 'suggestion-item';
-            const icon = document.createElement('i');
-            icon.className = `fas ${sug.icon} suggestion-icon`;
-            const textSpan = document.createElement('span');
-            textSpan.textContent = sug.text;
-            item.appendChild(icon);
-            item.appendChild(textSpan);
-            suggestionsList.appendChild(item);
-        });
-
-        const insights = generateInsights(p.fp, p.teamSize, p.reqClarity, p.devType, p.dbComplexity, p.platformComplexity, p.teamExp);
-        const insightsText = document.getElementById('insightsText');
-        insightsText.innerHTML = '';
-        insights.forEach(text => {
-            const para = document.createElement('p');
-            para.style.marginBottom = '6px';
-            para.textContent = text;
-            insightsText.appendChild(para);
-        });
-    }
-
-    // ------------------------------
-    // 3. Chat logic
-    // ------------------------------
-    function sendChatMessage() {
-        const input = document.getElementById('chatInput');
-        const message = input.value.trim();
-        if (!message) return;
-        appendMessage('user', message);
-        input.value = '';
-        const response = generateAssistantResponse(message);
-        setTimeout(() => appendMessage('assistant', response), 300);
-    }
-
-    function appendMessage(sender, text) {
-        const chatMessages = document.getElementById('chatMessages');
-        const msgDiv = document.createElement('div');
-        msgDiv.className = `message ${sender}`;
-        msgDiv.textContent = text;
-        chatMessages.appendChild(msgDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-
-    function generateAssistantResponse(userQuery) {
-        const p = getCurrentParams();
-        const estimate = computeEstimate(p.fp, p.teamSize, p.reqClarity, p.devType, p.dbComplexity, p.platformComplexity, p.teamExp);
-        const query = userQuery.toLowerCase();
-
-        if (query.includes('why') && (query.includes('high') || query.includes('estimate'))) {
-            const contribs = computeSHAP(p.fp, p.teamSize, p.reqClarity, p.devType, p.dbComplexity, p.platformComplexity, p.teamExp);
-            const positives = contribs.filter(c => c.value > 0.5).sort((a,b) => b.value - a.value);
-            if (positives.length > 0) {
-                let reasons = positives.map(c => `${c.label} (+${c.value.toFixed(1)} PM)`).join(', ');
-                return `The estimate is ${estimate.toFixed(1)} PM. The main factors increasing effort are: ${reasons}. You can reduce these by adjusting parameters (see the counterfactual suggestions).`;
-            } else {
-                return `The estimate is ${estimate.toFixed(1)} PM, which is relatively moderate. No single factor is excessively high.`;
-            }
-        }
-        if (query.includes('reduce') || query.includes('lower') || query.includes('improve')) {
-            const suggestions = generateSuggestions(p.fp, p.teamSize, p.reqClarity, p.devType, p.dbComplexity, p.platformComplexity, p.teamExp);
-            if (suggestions.length === 1 && suggestions[0].impact === 0) {
-                return 'Your current parameters are already optimal for effort reduction. No further suggestions.';
-            }
-            let resp = 'Here are actionable changes to reduce effort:\n';
-            suggestions.forEach((s, i) => {
-                resp += `${i+1}. ${s.text}\n`;
+        const topPositive = [...result.shap].filter(s => s.contribution > 0)
+            .sort((a,b) => b.contribution - a.contribution).slice(0, 4);
+        if (topPositive.length === 0) {
+            suggestionsList.innerHTML = '<div class="suggestion-item"><i class="fas fa-check suggestion-icon"></i><span>No major effort-driving factors detected.</span></div>';
+        } else {
+            topPositive.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'suggestion-item';
+                div.innerHTML = `<i class="fas fa-arrow-up suggestion-icon"></i>
+                    <span><strong>${escapeHtml(item.feature)}</strong> adds <strong>+${item.contribution.toFixed(2)} PM</strong>. 
+                    Consider whether this factor can be optimized.</span>`;
+                suggestionsList.appendChild(div);
             });
-            return resp;
         }
-        if (query.includes('team size') || query.includes('team')) {
-            const teamFactor = (p.teamSize <= 5) ? (5 - p.teamSize) * 1.2 : (p.teamSize > 10) ? (p.teamSize - 10) * 0.8 : 0;
-            let resp = `Current team size: ${p.teamSize}.\n`;
-            if (teamFactor > 0) {
-                resp += `This team size is adding ${teamFactor.toFixed(1)} PM to the estimate due to ${p.teamSize <= 5 ? 'understaffing (too few people)' : 'communication overhead (too many people)'}. `;
-                resp += `Optimal range is 6-10 people.`;
-            } else {
-                resp += 'Team size is within optimal range (6-10). No significant impact.';
-            }
-            return resp;
-        }
-        if (query.includes('clarity') || query.includes('requirements')) {
-            const clarityImpact = { low: 6, medium: 2, high: -2 };
-            let resp = `Current requirements clarity: ${p.reqClarity}.\n`;
-            if (p.reqClarity === 'low') resp += `This adds +6 PM. Improving to "high" could save 8 PM (difference from low to high).`;
-            else if (p.reqClarity === 'medium') resp += `This adds +2 PM. Improving to "high" could save 4 PM.`;
-            else resp += 'Clarity is already high, reducing effort by -2 PM.';
-            return resp;
-        }
-        if (query.includes('development type') || query.includes('dev type')) {
-            const devImpact = { new: 4, enhancement: 1, maintenance: -3 };
-            let resp = `Development type: ${p.devType}.\n`;
-            if (p.devType === 'new') resp += 'New development adds +4 PM. Switching to enhancement would save 3 PM.';
-            else if (p.devType === 'enhancement') resp += 'Enhancement adds +1 PM. Switching to maintenance would save 4 PM.';
-            else resp += 'Maintenance reduces effort by -3 PM (already optimal).';
-            return resp;
-        }
-        if (query.includes('database') || query.includes('db')) {
-            const dbImpact = { low: -2, medium: 1, high: 5 };
-            let resp = `Database complexity: ${p.dbComplexity}.\n`;
-            if (p.dbComplexity === 'high') resp += 'High complexity adds +5 PM. Reducing to medium saves 4 PM.';
-            else if (p.dbComplexity === 'medium') resp += 'Medium adds +1 PM. Reducing to low saves 3 PM.';
-            else resp += 'Low complexity reduces effort by -2 PM.';
-            return resp;
-        }
-        if (query.includes('platform')) {
-            const platImpact = { low: -2, medium: 2, high: 7 };
-            let resp = `Platform complexity: ${p.platformComplexity}.\n`;
-            if (p.platformComplexity === 'high') resp += 'High complexity adds +7 PM. Reducing to medium saves 5 PM.';
-            else if (p.platformComplexity === 'medium') resp += 'Medium adds +2 PM. Reducing to low saves 4 PM.';
-            else resp += 'Low complexity reduces effort by -2 PM.';
-            return resp;
-        }
-        if (query.includes('experience') || query.includes('team exp')) {
-            const expImpact = { low: 5, medium: 1, high: -4 };
-            let resp = `Team experience: ${p.teamExp}.\n`;
-            if (p.teamExp === 'low') resp += 'Low experience adds +5 PM. Improving to medium saves 4 PM.';
-            else if (p.teamExp === 'medium') resp += 'Medium adds +1 PM. Improving to high saves 5 PM.';
-            else resp += 'High experience reduces effort by -4 PM.';
-            return resp;
-        }
-        if (query.includes('function points') || query.includes('fp')) {
-            return `Function Points: ${p.fp}. This contributes ${(p.fp * 0.08).toFixed(1)} PM to the estimate. Reducing scope would lower effort.`;
-        }
-        if (query.includes('estimate') || query.includes('effort')) {
-            return `Current estimated effort: ${estimate.toFixed(1)} PM (range: ${(estimate*0.85).toFixed(1)} - ${(estimate*1.15).toFixed(1)} PM). Ask "why is the estimate high?" for a breakdown.`;
-        }
-        if (query.includes('confidence') || query.includes('range')) {
-            return `The model's confidence interval is ${(estimate*0.85).toFixed(1)} - ${(estimate*1.15).toFixed(1)} PM, based on LOOCV performance.`;
-        }
-        if (query.includes('shap') || query.includes('feature')) {
-            const contribs = computeSHAP(p.fp, p.teamSize, p.reqClarity, p.devType, p.dbComplexity, p.platformComplexity, p.teamExp);
-            let resp = 'SHAP contributions (PM):\n';
-            contribs.forEach(c => resp += `• ${c.label}: ${c.value > 0 ? '+' : ''}${c.value.toFixed(1)}\n`);
-            return resp;
-        }
-        // Fallback
-        return `I can help with questions about the estimate, feature impacts, or how to reduce effort. Try: "Why is the estimate high?", "How to reduce effort?", or ask about a specific parameter like "team size".`;
+
+        // Insights
+        const insights = [];
+        insights.push(`The model predicted <strong>${result.estimate.toFixed(1)} PM</strong> based on the current configuration.`);
+        if (params.Req_Clarity === 'low') insights.push('🔍 Low requirements clarity typically leads to rework — consider investing in elicitation.');
+        if (params.Team_Size > 10) insights.push('👥 Team size above 10 increases communication overhead. Consider sub-teams.');
+        if (params.Platform_Complexity === 'high') insights.push('⚠️ High platform complexity is a significant effort driver.');
+        if (params.Team_Exp_Lang === 'low') insights.push('📉 Low language experience can slow delivery — consider pairing or training.');
+        if (params.Dev_Type === 'new') insights.push('🆕 New development inherently requires more effort — consider reuse where possible.');
+        if (insights.length === 1) insights.push('✅ Configuration is relatively balanced — maintain good practices.');
+        document.getElementById('insightsText').innerHTML = insights.map(t => `<p style="margin-bottom:6px;">${t}</p>`).join('');
+
+    } catch (err) {
+        console.error(err);
+        document.getElementById('estimateRange').textContent = 'Error: ' + err.message;
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-calculator"></i> Generate Estimate & Insights';
+    }
+}
+
+function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+/* ============================================================
+   CHAT LOGIC (uses lastResult if available)
+   ============================================================ */
+function sendChatMessage() {
+    const input = document.getElementById('chatInput');
+    const message = input.value.trim();
+    if (!message) return;
+    appendMessage('user', message);
+    input.value = '';
+    setTimeout(() => appendMessage('assistant', generateAssistantResponse(message)), 250);
+}
+
+function appendMessage(sender, text) {
+    const container = document.getElementById('chatMessages');
+    const div = document.createElement('div');
+    div.className = 'message ' + sender;
+    div.innerHTML = text;
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
+}
+
+function generateAssistantResponse(query) {
+    const q = query.toLowerCase();
+    const params = getCurrentParams();
+
+    if (!lastResult) {
+        return 'Please generate an estimate first (click "Generate Estimate & Insights"), then I can explain the results for your specific configuration.';
     }
 
-    // ------------------------------
-    // 4. Event listeners & tab switching
-    // ------------------------------
-    document.getElementById('estimateBtn').addEventListener('click', function() {
-        updateVisualDashboard();
-    });
+    const est = lastResult.estimate;
+    const shap = lastResult.shap;
 
-    document.querySelectorAll('input, select').forEach(el => {
-        el.addEventListener('input', updateVisualDashboard);
-        el.addEventListener('change', updateVisualDashboard);
-    });
+    if (q.includes('why') && (q.includes('high') || q.includes('estimate'))) {
+        const positives = shap.filter(s => s.contribution > 0.3)
+            .sort((a,b) => b.contribution - a.contribution).slice(0, 5);
+        if (positives.length === 0) {
+            return `The estimate is <strong>${est.toFixed(1)} PM</strong> — relatively moderate. No single factor dominates.`;
+        }
+        const list = positives.map(c => `• <strong>${escapeHtml(c.feature)}</strong>: +${c.contribution.toFixed(2)} PM`).join('<br>');
+        return `The estimated effort is <strong>${est.toFixed(1)} PM</strong>. The main factors increasing effort are:<br>${list}<br><br>You can reduce these by adjusting the corresponding inputs in the left panel.`;
+    }
 
-    // Tab switching
-    document.querySelectorAll('.chat-tab').forEach(tab => {
-        tab.addEventListener('click', function() {
-            document.querySelectorAll('.chat-tab').forEach(t => t.classList.remove('active'));
-            this.classList.add('active');
-            const tabName = this.getAttribute('data-tab');
-            document.getElementById('visual-tab').style.display = tabName === 'visual' ? 'block' : 'none';
-            document.getElementById('chat-tab').style.display = tabName === 'chat' ? 'block' : 'none';
-        });
-    });
+    if (q.includes('reduce') || q.includes('lower') || q.includes('improve')) {
+        const positives = shap.filter(s => s.contribution > 0.3)
+            .sort((a,b) => b.contribution - a.contribution).slice(0, 5);
+        if (positives.length === 0) {
+            return 'Your configuration is already lean — no major effort-reduction opportunities detected.';
+        }
+        let resp = 'Here are the top factors currently increasing effort — try lowering them:<br>';
+        positives.forEach((c, i) => { resp += `${i+1}. <strong>${escapeHtml(c.feature)}</strong> → +${c.contribution.toFixed(2)} PM<br>`; });
+        return resp;
+    }
 
-    // Initial update
-    updateVisualDashboard();
+    if (q.includes('estimate') || q.includes('effort') || q.includes('how much')) {
+        return `Current estimate: <strong>${est.toFixed(1)} PM</strong> (range: ${(est*0.85).toFixed(1)}–${(est*1.15).toFixed(1)} PM). Ask "why is the estimate high?" for a factor breakdown.`;
+    }
+
+    if (q.includes('shap') || q.includes('factor') || q.includes('contribute')) {
+        const sorted = [...shap].sort((a,b) => Math.abs(b.contribution) - Math.abs(a.contribution)).slice(0, 8);
+        let resp = 'Top SHAP contributions (PM):<br>';
+        sorted.forEach(c => { resp += `• ${escapeHtml(c.feature)}: ${c.contribution>0?'+':''}${c.contribution.toFixed(2)}<br>`; });
+        return resp;
+    }
+
+    // Match a specific feature by name
+    const matched = FEATURES_CONFIG.find(f =>
+        q.includes(f.label.toLowerCase()) || q.includes(f.name.toLowerCase().replace(/_/g,' ')));
+    if (matched) {
+        const contrib = shap.find(s => s.feature === matched.name);
+        const val = params[matched.name];
+        if (contrib) {
+            return `<strong>${escapeHtml(matched.label)}</strong> is set to "<em>${escapeHtml(String(val))}</em>", contributing <strong>${contrib.contribution>0?'+':''}${contrib.contribution.toFixed(2)} PM</strong> to the estimate.`;
+        }
+        return `<strong>${escapeHtml(matched.label)}</strong> is set to "<em>${escapeHtml(String(val))}</em>".`;
+    }
+
+    return `I can explain the estimate (currently <strong>${est.toFixed(1)} PM</strong>), list the biggest SHAP drivers, or suggest how to reduce effort. Try: "Why is the estimate high?", "How to reduce effort?", or ask about a specific field like "team size" or "requirements clarity".`;
+}
+
+/* ============================================================
+   EVENT LISTENERS & INIT
+   ============================================================ */
+document.getElementById('estimateBtn').addEventListener('click', updateVisualDashboard);
+
+document.querySelectorAll('.chat-tab').forEach(tab => {
+    tab.addEventListener('click', function () {
+        document.querySelectorAll('.chat-tab').forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        const name = this.getAttribute('data-tab');
+        document.getElementById('visual-tab').style.display = name === 'visual' ? 'block' : 'none';
+        document.getElementById('chat-tab').style.display = name === 'chat' ? 'block' : 'none';
+    });
+});
+
+renderForm();
+setStatus(false);
 </script>
 </body>
 </html>
